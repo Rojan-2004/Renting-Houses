@@ -3,22 +3,21 @@ import { BrowserRouter as Router, Routes , Route} from 'react-router-dom';
 import RentalWebsite from './Components/RentalWebsite.jsx';
 //import img from "./assets/images"
 
-const App = () => {
-  return (
+// const App = () => {
+//   return (
 
-      <Router>
-        <Routes>
-         <Route path="/" element={<RentalWebsite />} />
-        </Routes>
-      </Router>
+//       <Router>
+//         <Routes>
+//          <Route path="/" element={<RentalWebsite />} />
+//         </Routes>
+//       </Router>
 
-  );
-};
+//   );
+// };
 
 
 
-export default App;
-=======
+// export default App;
 // import { useState } from 'react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
@@ -57,7 +56,6 @@ export default App;
 
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './pages/SignUp';
 
 function App() {
@@ -78,4 +76,3 @@ function App() {
 
 export default App;
 
->>>>>>> origin/Jessica
