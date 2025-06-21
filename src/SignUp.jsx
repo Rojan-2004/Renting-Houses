@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 
-function SignUp() {
+export default function SignUp() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = data => console.log(data);
 
@@ -61,15 +61,3 @@ function SignUp() {
   );
 }
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/signup" element={<SignUp />} />
-        {/* Add other routes here */}
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;

@@ -37,7 +37,8 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SignUp from './pages/SignUp';
+import SignUp from './SignUp';    
+import LoginPage from './LoginPage';
 
 function App() {
   return (
@@ -46,7 +47,7 @@ function App() {
         {/* Home, Landlord, Tenants, etc. can be added later */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<div className="text-center p-10 text-xl">Welcome to Rental Buddy</div>} />
-        <Route path="/login" element={<div className="text-center p-10 text-xl">Login Page (Coming Soon)</div>} />
+        <Route path="/login" element={<LoginPage/>} />
         <Route path="/landlord" element={<div className="text-center p-10 text-xl">Landlord Page (Coming Soon)</div>} />
         <Route path="/tenants" element={<div className="text-center p-10 text-xl">Tenants Page (Coming Soon)</div>} />
         <Route path="/contact" element={<div className="text-center p-10 text-xl">Contact Us (Coming Soon)</div>} />
