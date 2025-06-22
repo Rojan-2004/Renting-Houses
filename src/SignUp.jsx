@@ -124,7 +124,7 @@ export default function SignUp() {
       <footer className="bg-white py-6 border-t">
         <div className="flex flex-col items-center">
           <img src="/logo.png" alt="Rental Buddy" className="h-12 mb-2" />
-          <p className="text-sm text-center">Bhotahity-449002, Sifalganj Nayafer, Kathmandu Valley</p>
+          <p className="text-sm text-center">44800,Bhaktapur,Srijana Nagar,Kathamndu Valley,Nepal</p>
           <p className="text-sm">(123) 456-7890 | rentalbuddy@gmail.com</p>
           <div className="flex space-x-3 mt-2">
             <a href="#"><i className="fab fa-facebook"></i></a>

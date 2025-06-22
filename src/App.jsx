@@ -37,17 +37,28 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SignUp from './SignUp';    
+import SignUp from './SignUp';
 import LoginPage from './LoginPage';
+import PropertyDetail from './PropertyDetail'; // make sure the path is correct
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Home, Landlord, Tenants, etc. can be added later */}
+        {/* Home Page */}
+        <Route
+          path="/"
+          element={<div className="text-center p-10 text-xl">Welcome to Rental Buddy</div>}
+        />
+
+        {/* Auth Pages */}
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/" element={<div className="text-center p-10 text-xl">Welcome to Rental Buddy</div>} />
-        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Property Detail Page (dynamic ID) */}
+        <Route path="/property/:id" element={<PropertyDetail />} />
+
+        {/* Placeholder Pages */}
         <Route path="/landlord" element={<div className="text-center p-10 text-xl">Landlord Page (Coming Soon)</div>} />
         <Route path="/tenants" element={<div className="text-center p-10 text-xl">Tenants Page (Coming Soon)</div>} />
         <Route path="/contact" element={<div className="text-center p-10 text-xl">Contact Us (Coming Soon)</div>} />
@@ -57,4 +68,3 @@ function App() {
 }
 
 export default App;
-
