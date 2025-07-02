@@ -64,7 +64,7 @@ function App() {
       <Routes>
         {/* Home, Landlord, Tenants, etc. can be added later */}
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/" element={<div className="text-center p-10 text-xl">Welcome to Rental Buddy</div>} />
+        <Route path="/" element={<RentalWebsite/>} />
         <Route path="/login" element={<div className="text-center p-10 text-xl">Login Page (Coming Soon)</div>} />
         <Route path="/landlord" element={<div className="text-center p-10 text-xl">Landlord Page (Coming Soon)</div>} />
         <Route path="/tenants" element={<div className="text-center p-10 text-xl">Tenants Page (Coming Soon)</div>} />
