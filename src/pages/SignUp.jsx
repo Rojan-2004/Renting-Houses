@@ -60,16 +60,17 @@ function SignUp() {
     </div>
   );
 }
+export default SignUp;
 
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/signup" element={<SignUp />} />
-        {/* Add other routes here */}
-      </Routes>
-    </Router>
-  );
-}
+// function App() {
+//   return (
+//     <Router>
+//       <Routes>
+//         <Route path="/signup" element={<SignUp />} />
+//         {/* Add other routes here */}
+//       </Routes>
+//     </Router>
+//   );
+// }
 
-export default App;
+// export default App;
