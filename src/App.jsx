@@ -1,78 +1,26 @@
 
-import { BrowserRouter as Router, Routes , Route} from 'react-router-dom';
-import RentalWebsite from './Components/RentalWebsite.jsx';
-//import img from "./assets/images"
-
-// const App = () => {
-//   return (
-
-//       <Router>
-//         <Routes>
-//          <Route path="/" element={<RentalWebsite />} />
-//         </Routes>
-//       </Router>
-
-//   );
-// };
-
-
-
-// export default App;
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vite.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
-
 import React from 'react';
-import SignUp from './pages/SignUp';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SignUp from './SignUp';
+import LoginPage from './LoginPage';
+import PropertyDetail from './PropertyDetail'; // make sure the path is correct
+import RentalWebsite from './Components/RentalWebsite';
 
 function App() {
   return (
     <Router>
       <Routes>
+
         {/* Home, Landlord, Tenants, etc. can be added later */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<RentalWebsite/>} />
-        <Route path="/login" element={<div className="text-center p-10 text-xl">Login Page (Coming Soon)</div>} />
-        <Route path="/landlord" element={<div className="text-center p-10 text-xl">Landlord Page (Coming Soon)</div>} />
-        <Route path="/tenants" element={<div className="text-center p-10 text-xl">Tenants Page (Coming Soon)</div>} />
-        <Route path="/contact" element={<div className="text-center p-10 text-xl">Contact Us (Coming Soon)</div>} />
+        <Route path="/login" element={<LoginPage/>} />
+        {/* Property Detail Page (dynamic ID) */}
+        <Route path="/property/:id" element={<PropertyDetail />} />
+    
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
