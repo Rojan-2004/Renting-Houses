@@ -281,7 +281,7 @@ const RentalWebsite = () => {
               </div>
             </div>
             
-            {/* Desktop Menu */}
+          
            <ul className="hidden md:flex space-x-8">
   {['home', 'properties', 'services', 'about'].map(item => (
     <li key={item}>
