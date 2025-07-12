@@ -123,7 +123,7 @@ const MyFavorites = () => {
     }
   }, []);
 
-  // Update properties when favorites change
+
   useEffect(() => {
     const favoriteProperties = allProperties.filter(property => favorites.has(property.id));
     setProperties(favoriteProperties);

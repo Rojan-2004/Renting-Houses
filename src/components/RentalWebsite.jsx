@@ -321,7 +321,7 @@ const RentalWebsite = () => {
 </ul>
 
 
-         
+            {/* Mobile Menu Button */}
             <button
               className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
