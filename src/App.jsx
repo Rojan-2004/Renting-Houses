@@ -19,8 +19,8 @@ function App() {
         <Route path="/favorites" element={<MyFavorites/>} />
         
         {/* Other routes can be added later */}
-        {/* <Route path="/signup" element={<SignUp />} /> */}
-        {/* <Route path="/login" element={<LoginPage/>} /> */}
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<LoginPage/>} />
         {/* Property Detail Page (dynamic ID) */}
         {/* <Route path="/property/:id" element={<PropertyDetail />} /> */}
       </Routes>
