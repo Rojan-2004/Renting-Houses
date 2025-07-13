@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-
+import { useNavigate } from 'react-router-dom';
 
 import { 
   Home, MapPin, Bed, Bath, Square, Star, Phone, Mail, Menu, X, Check, 
@@ -9,6 +8,7 @@ import {
 } from 'lucide-react';
 
 const RentalWebsite = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [animatedElements, setAnimatedElements] = useState(new Set());
@@ -157,6 +157,14 @@ const RentalWebsite = () => {
     }
   ];
 
+ 
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      setFavorites(new Set(JSON.parse(savedFavorites)));
+    }
+  }, []);
+
   // Auto-slide images for properties
   useEffect(() => {
     properties.forEach(property => {
@@ -213,6 +221,8 @@ const RentalWebsite = () => {
       } else {
         newFavorites.add(propertyId);
       }
+      // Save to localStorage
+      localStorage.setItem('favorites', JSON.stringify([...newFavorites]));
       return newFavorites;
     });
   };
@@ -272,19 +282,44 @@ const RentalWebsite = () => {
             </div>
             
             {/* Desktop Menu */}
-            <ul className="hidden md:flex space-x-8">
-              {['home', 'properties', 'services', 'about', 'contact'].map(item => (
-                <li key={item}>
-                  <button
-                    onClick={() => scrollToSection(item)}
-                    className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
-                  >
-                    {item}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+           <ul className="hidden md:flex space-x-8">
+  {['home', 'properties', 'services', 'about'].map(item => (
+    <li key={item}>
+      <button
+        onClick={() => scrollToSection(item)}
+        className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
+      >
+        {item}
+        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+      </button>
+    </li>
+  ))}
+  <li>
+    <button
+      onClick={() => navigate('/favorites')}
+      className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group flex items-center"
+    >
+      <Heart className="w-4 h-4 mr-1" />
+      Favorites
+      {favorites.size > 0 && (
+        <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+          {favorites.size}
+        </span>
+      )}
+      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+    </button>
+  </li>
+  <li>
+    <button
+      onClick={() => scrollToSection('login')}
+      className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
+    >
+      login
+      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+    </button>
+  </li>
+</ul>
+
 
             {/* Mobile Menu Button */}
             <button
@@ -309,6 +344,25 @@ const RentalWebsite = () => {
                     </button>
                   </li>
                 ))}
+                <li>
+                  <button
+                    onClick={() => {
+                      navigate('/favorites');
+                      setIsMenuOpen(false);
+                    }}
+                    className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 flex items-center justify-between"
+                  >
+                    <span className="flex items-center">
+                      <Heart className="w-4 h-4 mr-2" />
+                      Favorites
+                    </span>
+                    {favorites.size > 0 && (
+                      <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                        {favorites.size}
+                      </span>
+                    )}
+                  </button>
+                </li>
               </ul>
             </div>
           )}
