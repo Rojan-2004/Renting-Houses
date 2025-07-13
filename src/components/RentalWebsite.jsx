@@ -382,7 +382,7 @@ const RentalWebsite = () => {
         id="home" 
         className="min-h-screen flex items-center justify-center text-center text-white relative overflow-hidden"
         style={{
-  backgroundImage: `url('/src/assets/Images/Background.png')`,
+  backgroundImage: `url('/Background.png')`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
  backgroundRepeat: 'no-repeat',
