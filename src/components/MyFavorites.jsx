@@ -405,26 +405,7 @@ const MyFavorites = () => {
           </div>
         )}
 
-        {/* Quick Actions */}
-        {favorites.size > 0 && (
-          <div className="mt-16 bg-white rounded-3xl shadow-lg p-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Quick Actions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <button className="flex items-center justify-center space-x-3 p-6 bg-blue-50 rounded-2xl hover:bg-blue-100 transition-all duration-300 group">
-                <Phone className="w-6 h-6 text-blue-600 group-hover:scale-110 transition-transform duration-300" />
-                <span className="font-semibold text-blue-600">Contact Agent</span>
-              </button>
-              <button className="flex items-center justify-center space-x-3 p-6 bg-green-50 rounded-2xl hover:bg-green-100 transition-all duration-300 group">
-                <Calendar className="w-6 h-6 text-green-600 group-hover:scale-110 transition-transform duration-300" />
-                <span className="font-semibold text-green-600">Schedule Viewing</span>
-              </button>
-              <button className="flex items-center justify-center space-x-3 p-6 bg-purple-50 rounded-2xl hover:bg-purple-100 transition-all duration-300 group">
-                <Mail className="w-6 h-6 text-purple-600 group-hover:scale-110 transition-transform duration-300" />
-                <span className="font-semibold text-purple-600">Get Updates</span>
-              </button>
-            </div>
-          </div>
-        )}
+
       </div>
     </div>
   );
