@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  BrowserRouter,
   Routes,
   Route,
   NavLink,
@@ -154,35 +153,33 @@ const LogoutSection = () => {
 
 // Admin Dashboard Component
 const AdminDashboard = () => (
-  <BrowserRouter>
-    <div className="dashboard-container">
-      <div className="sidebar">
-        <img src="/images/Logo.png" alt="Logo" className="logo" />
-        <img src="/images/User.png" alt="User" className="user-photo" />
-        <p>Welcome Back!<br /><strong>Parixit</strong></p>
+  <div className="dashboard-container">
+    <div className="sidebar">
+      <img src="/images/Logo.png" alt="Logo" className="logo" />
+      <img src="/images/User.png" alt="User" className="user-photo" />
+      <p>Welcome Back!<br /><strong>Parixit</strong></p>
 
-        <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active-btn' : ''}>Dashboard</NavLink>
-        <NavLink to="/verify-homes" className={({ isActive }) => isActive ? 'active-btn' : ''}>Clients</NavLink>
-        <NavLink to="/building-connection" className={({ isActive }) => isActive ? 'active-btn' : ''}>Reports</NavLink>
-        <NavLink to="/settings" className={({ isActive }) => isActive ? 'active-btn' : ''}>Settings</NavLink>
-        <NavLink to="/logout" className={({ isActive }) => isActive ? 'active-btn' : ''}>Logout</NavLink>
-      </div>
-
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<DashboardSection />} />
-          <Route path="/dashboard" element={<DashboardSection />} />
-          <Route path="/verify-homes" element={<VerifyHomesSection />} />
-          <Route path="/building-connection" element={<BuildingConnectionSection />} />
-          <Route path="/client-details" element={<ClientDetailsSection />} />
-          <Route path="/property-details" element={<PropertyDetailsSection />} />
-          <Route path="/settings" element={<SettingsSection />} />
-          <Route path="/logout" element={<LogoutSection />} />
-          <Route path="*" element={<DashboardSection />} /> {/* Fallback */}
-        </Routes>
-      </div>
+      <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active-btn' : ''}>Dashboard</NavLink>
+      <NavLink to="/verify-homes" className={({ isActive }) => isActive ? 'active-btn' : ''}>Clients</NavLink>
+      <NavLink to="/building-connection" className={({ isActive }) => isActive ? 'active-btn' : ''}>Reports</NavLink>
+      <NavLink to="/settings" className={({ isActive }) => isActive ? 'active-btn' : ''}>Settings</NavLink>
+      <NavLink to="/logout" className={({ isActive }) => isActive ? 'active-btn' : ''}>Logout</NavLink>
     </div>
-  </BrowserRouter>
+
+    <div className="content">
+      <Routes>
+        <Route path="/" element={<DashboardSection />} />
+        <Route path="/dashboard" element={<DashboardSection />} />
+        <Route path="/verify-homes" element={<VerifyHomesSection />} />
+        <Route path="/building-connection" element={<BuildingConnectionSection />} />
+        <Route path="/client-details" element={<ClientDetailsSection />} />
+        <Route path="/property-details" element={<PropertyDetailsSection />} />
+        <Route path="/settings" element={<SettingsSection />} />
+        <Route path="/logout" element={<LogoutSection />} />
+        <Route path="*" element={<DashboardSection />} /> {/* Fallback */}
+      </Routes>
+    </div>
+  </div>
 );
 
 export default AdminDashboard;
