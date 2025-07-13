@@ -157,7 +157,7 @@ const RentalWebsite = () => {
     }
   ];
 
-  // Load favorites from localStorage on component mount
+ 
   useEffect(() => {
     const savedFavorites = localStorage.getItem('favorites');
     if (savedFavorites) {
