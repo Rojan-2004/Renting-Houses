@@ -1,0 +1,236 @@
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* Layout Containers */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  background: #2c3e50;
+  color: white;
+  position: fixed;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+}
+
+.sidebar .logo {
+  width: 100%;
+  max-width: 120px;
+  margin-bottom: 10px;
+}
+
+.sidebar .user-photo {
+  width: 70px;
+  border-radius: 50%;
+  margin: 10px auto;
+}
+
+/* Sidebar Navigation Buttons */
+.sidebar a {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  background: #34495e;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.2s ease-in-out;
+}
+
+.sidebar a:hover {
+  background: #1abc9c;
+}
+
+.sidebar .active-btn {
+  background: #1abc9c;
+  font-weight: bold;
+}
+
+/* Content Area */
+.content {
+  flex: 1;
+  margin-left: 220px;
+  padding: 20px;
+}
+
+/* Dashboard Promo Box */
+.promo-box {
+  background: #ecf0f1;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  min-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.promo-box h2 {
+  margin-bottom: 10px;
+}
+
+.promo-box img {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+.explore-btn {
+  background-color: #27ae60;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+.explore-btn:hover {
+  background-color: #219150;
+}
+
+/* Verify Homes Table */
+.table-container {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #3498db;
+  color: white;
+}
+
+td button {
+  margin-right: 5px;
+  padding: 6px 10px;
+  font-size: 14px;
+  background-color: #2980b9;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+td button:hover {
+  background-color: #1f6391;
+}
+
+/* Property Image */
+.property-image {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Logout Popup */
+.logout-popup {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  padding: 40px;
+  max-width: 400px;
+  margin: 100px auto;
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.logout-popup h2 {
+  margin-bottom: 20px;
+}
+
+.logout-popup .emoji {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.logout-popup button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.logout-popup .confirm {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.logout-popup .cancel {
+  background-color: #3498db;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .sidebar a {
+    width: 45%;
+    margin: 5px;
+  }
+
+  .content {
+    margin-left: 0;
+    padding-top: 20px;
+  }
+
+  .promo-box {
+    padding: 10px;
+  }
+}
