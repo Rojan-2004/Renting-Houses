@@ -9,15 +9,10 @@ export default function SignUp() {
   const [successMessage, setSuccessMessage] = useState('');
 
   const onSubmit = (data) => {
-    if (data.password !== data.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
-    // Success
-    alert(`Welcome, ${data.username}! You have successfully signed up.`);
-    setSuccessMessage(`Hello ${data.username}, your account has been created.`);
-    console.log("Submitted data:", data);
+      fetch("http://localhost:4000/api/users", {
+         method: "POST",
+         
+      })
   };
 
   return (

@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database');
+import { DataTypes } from "sequelize";
+import { sequelize } from "../../database/index.js";
 
-const Favorite = sequelize.define('Favorite', {
+export const Favorite = sequelize.define('Favorite', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -10,5 +10,3 @@ const Favorite = sequelize.define('Favorite', {
 }, {
   timestamps: true
 });
-
-module.exports = Favorite;

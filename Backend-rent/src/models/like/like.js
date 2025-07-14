@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database');
+import { DataTypes } from "sequelize";
+import { sequelize } from "../../database/index.js";
 
-const Like = sequelize.define('Like', {
+export const Like = sequelize.define('Like', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -10,5 +10,3 @@ const Like = sequelize.define('Like', {
 }, {
   timestamps: true
 });
-
-module.exports = Like;

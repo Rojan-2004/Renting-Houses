@@ -1,13 +1,12 @@
-const { Comment, Property, User } = require('../models');
+import { Comment, User } from '../../models/index.js';
 
-const createComment = async (req, res) => {
+export const createComment = async (req, res) => {
   try {
-    const { propertyId, content, rating } = req.body;
+    const { content, rating } = req.body;
     const comment = await Comment.create({
       content,
       rating,
-      userId: req.user.id,
-      propertyId
+      userId: req.user.id
     });
     res.status(201).json(comment);
   } catch (error) {
@@ -15,7 +14,7 @@ const createComment = async (req, res) => {
   }
 };
 
-const getCommentsForProperty = async (req, res) => {
+export const getCommentsForProperty = async (req, res) => {
   try {
     const comments = await Comment.findAll({
       where: { propertyId: req.params.propertyId },
@@ -27,7 +26,7 @@ const getCommentsForProperty = async (req, res) => {
   }
 };
 
-const updateComment = async (req, res) => {
+export const updateComment = async (req, res) => {
   try {
     const [updated] = await Comment.update(req.body, {
       where: { id: req.params.id, userId: req.user.id }
@@ -43,7 +42,7 @@ const updateComment = async (req, res) => {
   }
 };
 
-const deleteComment = async (req, res) => {
+export const deleteComment = async (req, res) => {
   try {
     const deleted = await Comment.destroy({
       where: { id: req.params.id, userId: req.user.id }
@@ -56,11 +55,4 @@ const deleteComment = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error deleting comment', error: error.message });
   }
-};
-
-module.exports = {
-  createComment,
-  getCommentsForProperty,
-  updateComment,
-  deleteComment
 };

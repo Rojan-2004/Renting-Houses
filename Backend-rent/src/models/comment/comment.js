@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database');
+import { DataTypes } from "sequelize";
+import { sequelize } from "../../database/index.js";
 
-const Comment = sequelize.define('Comment', {
+export const Comment = sequelize.define('Comment', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -21,5 +21,3 @@ const Comment = sequelize.define('Comment', {
 }, {
   timestamps: true
 });
-
-module.exports = Comment;
