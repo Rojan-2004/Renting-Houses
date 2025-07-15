@@ -1,11 +1,11 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import SignUp from './SignUp';
-import LoginPage from './LoginPage';
-import PropertyDetail from './PropertyDetail';
-import RentalWebsite from './components/RentalWebsite';
-import MyFavorites from './components/MyFavorites';
-import AdminDashboard from './AdminDashboard';
+import SignUp from './pages/auth/SignUp';
+import LoginPage from './pages/auth/LoginPage';
+import PropertyDetail from './pages/user/PropertyDetail';
+import RentalWebsite from './pages/RentalWebsite';
+import MyFavorites from './pages/user/MyFavorites';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 function App() {
   return (
