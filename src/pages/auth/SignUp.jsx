@@ -3,16 +3,36 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
+  const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
   const [successMessage, setSuccessMessage] = useState('');
 
-  const onSubmit = (data) => {
-      fetch("http://localhost:4000/api/users", {
-         method: "POST",
-         
-      })
+  const onSubmit = async (data) => {
+    setSuccessMessage("");
+    try {
+      const response = await fetch("http://localhost:4000/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.username, // use username as name
+          email: data.email,
+          password: data.password
+        })
+      });
+      const result = await response.json();
+      console.log(result)
+      if (response.status) {
+        setSuccessMessage("Registration successful! You can now log in.");
+        register("/login")
+      } else {
+        setSuccessMessage(result.error || "Registration failed.");
+      }
+    } catch (error) {
+      setSuccessMessage("Registration failed. Please try again later.");
+    }
   };
 
   return (
