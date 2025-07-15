@@ -149,7 +149,7 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   // Separate forms
@@ -169,10 +169,31 @@ export default function LoginPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [otpSentMessage, setOtpSentMessage] = useState("");
+  const navigate = useNavigate();
 
-  const onSubmitLogin = (data) => {
-    alert(`Welcome back, ${data.email}`);
-    setSuccessMessage(`Login successful for ${data.email}`);
+  const onSubmitLogin = async (data) => {
+    setSuccessMessage("");
+    try {
+      const response = await fetch("http://localhost:4000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password
+        })
+      });
+      const result = await response.json();
+      if (response.ok) {
+        setSuccessMessage("Login successful!");
+        setTimeout(() => {
+          navigate("/dashboard"); // Redirect to RentalWebsite
+        }, 1000);
+      } else {
+        setSuccessMessage(result.message || result.error || "Login failed.");
+      }
+    } catch (error) {
+      setSuccessMessage("Login failed. Please try again later.");
+    }
   };
 
   const onSubmitForgot = (data) => {

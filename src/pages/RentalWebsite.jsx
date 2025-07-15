@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-
-
+import { useNavigate } from 'react-router-dom';
 
 import { 
   Home, MapPin, Bed, Bath, Square, Star, Phone, Mail, Menu, X, Check, 
@@ -9,6 +8,7 @@ import {
 } from 'lucide-react';
 
 const RentalWebsite = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [animatedElements, setAnimatedElements] = useState(new Set());
@@ -29,7 +29,7 @@ const RentalWebsite = () => {
       sqft: 1200,
       rating: 4.8,
       reviews: 24,
-      images: ["https://th.bing.com/th?id=OIF.P99VMlaALUDQY5%2bVPLtpSw&w=290&h=193&c=7&r=0&o=7&dpr=1.7&pid=1.7&rm=3"  ],
+      images: ["/house1.png"],
       features: ["Furnished", "Parking", "WiFi", "Security"],
       type: "apartment",
       availableFrom: "Immediately",
@@ -45,28 +45,28 @@ const RentalWebsite = () => {
       sqft: 1800,
       rating: 4.9,
       reviews: 31,
-      images: [  "https://th.bing.com/th/id/OIF.52AEixZHsPHkL1zfk7B8RA?w=246&h=180&c=7&r=0&o=7&dpr=1.7&pid=1.7&rm=3"   ],
+      images: ["/house2.jpg"],
       features: ["Garden", "Balcony", "Gym", "Pool"],
       type: "house",
       availableFrom: "Jan 15, 2025",
       description: "Spacious house in prestigious Lazimpat area with garden and modern facilities."
     },
     {
-  id: 3,
-  price: "NPR 1,85,000",
-  originalPrice: "NPR 2,15,000",
-  location: "Baneshwor, Kathmandu",
-  beds: 2,
-  baths: 2,
-  sqft: 950,
-  rating: 4.6,
-  reviews: 18,
-  images: ["https://ts4.mm.bing.net/th?id=OIP.xH9wwx9vubTb9x1yjyhIHgHaEO&pid=15.1"],
-  features: ["Metro Access", "Shopping Mall", "Restaurants"],
-  type: "apartment",
-  availableFrom: "Feb 1, 2025",
-  description: "Convenient apartment with excellent connectivity and nearby amenities."
-},
+      id: 3,
+      price: "NPR 1,85,000",
+      originalPrice: "NPR 2,15,000",
+      location: "Baneshwor, Kathmandu",
+      beds: 2,
+      baths: 2,
+      sqft: 950,
+      rating: 4.6,
+      reviews: 18,
+      images: ["/house3.jpg"],
+      features: ["Metro Access", "Shopping Mall", "Restaurants"],
+      type: "apartment",
+      availableFrom: "Feb 1, 2025",
+      description: "Convenient apartment with excellent connectivity and nearby amenities."
+    },
     {
       id: 4,
       price: "NPR 5,20,000",
@@ -77,9 +77,7 @@ const RentalWebsite = () => {
       sqft: 2500,
       rating: 5.0,
       reviews: 42,
-      images: [
-        "https://th.bing.com/th/id/OIP.Qe3WcOb7Flblmm2prUpCiAHaE8?w=212&h=180&c=7&r=0&o=7&dpr=1.7&pid=1.7&rm=3"
-      ],
+      images: ["/luxuryhouse.jpg"],
       features: ["Luxury", "City View", "Concierge", "Valet"],
       type: "villa",
       availableFrom: "March 1, 2025",
@@ -95,8 +93,7 @@ const RentalWebsite = () => {
       sqft: 1400,
       rating: 4.7,
       reviews: 27,
-      images: [
-"https://th.bing.com/th/id/OIP.poFeymQbVib0Q2pZfxVqZwHaE8?w=1920&h=1281&rs=1&pid=ImgDetMain"      ],
+      images: ["/livingroom.jpg"],
       features: ["Temple View", "Peaceful", "Cultural Area"],
       type: "house",
       availableFrom: "Jan 20, 2025",
@@ -112,7 +109,7 @@ const RentalWebsite = () => {
       sqft: 1350,
       rating: 4.8,
       reviews: 35,
-      images: ["https://th.bing.com/th/id/OIP.EmigJblxF0nxRbwQVm6mowHaFk?w=208&h=180&c=7&r=0&o=7&dpr=1.7&pid=1.7&rm=3"],
+      images: ["/similar1.png"],
       features: ["Embassy Area", "Secure", "Premium Location"],
       type: "apartment",
       availableFrom: "Feb 15, 2025",
@@ -156,6 +153,14 @@ const RentalWebsite = () => {
       rating: 5
     }
   ];
+
+  // Load favorites from localStorage on component mount
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      setFavorites(new Set(JSON.parse(savedFavorites)));
+    }
+  }, []);
 
   // Auto-slide images for properties
   useEffect(() => {
@@ -213,6 +218,8 @@ const RentalWebsite = () => {
       } else {
         newFavorites.add(propertyId);
       }
+      // Save to localStorage
+      localStorage.setItem('favorites', JSON.stringify([...newFavorites]));
       return newFavorites;
     });
   };
@@ -272,19 +279,44 @@ const RentalWebsite = () => {
             </div>
             
             {/* Desktop Menu */}
-            <ul className="hidden md:flex space-x-8">
-              {['home', 'properties', 'services', 'about', 'contact'].map(item => (
-                <li key={item}>
-                  <button
-                    onClick={() => scrollToSection(item)}
-                    className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
-                  >
-                    {item}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
-                  </button>
-                </li>
-              ))}
-            </ul>
+           <ul className="hidden md:flex space-x-8">
+  {['home', 'properties', 'services', 'about'].map(item => (
+    <li key={item}>
+      <button
+        onClick={() => scrollToSection(item)}
+        className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
+      >
+        {item}
+        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+      </button>
+    </li>
+  ))}
+  <li>
+    <button
+      onClick={() => navigate('/favorites')}
+      className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group flex items-center"
+    >
+      <Heart className="w-4 h-4 mr-1" />
+      Favorites
+      {favorites.size > 0 && (
+        <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+          {favorites.size}
+        </span>
+      )}
+      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+    </button>
+  </li>
+  <li>
+    <button
+      onClick={() => navigate('/login')}
+      className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
+    >
+      login
+      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+    </button>
+  </li>
+</ul>
+
 
             {/* Mobile Menu Button */}
             <button
@@ -309,6 +341,36 @@ const RentalWebsite = () => {
                     </button>
                   </li>
                 ))}
+                <li>
+                  <button
+                    onClick={() => {
+                      navigate('/favorites');
+                      setIsMenuOpen(false);
+                    }}
+                    className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 flex items-center justify-between"
+                  >
+                    <span className="flex items-center">
+                      <Heart className="w-4 h-4 mr-2" />
+                      Favorites
+                    </span>
+                    {favorites.size > 0 && (
+                      <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
+                        {favorites.size}
+                      </span>
+                    )}
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      navigate('/login');
+                      setIsMenuOpen(false);
+                    }}
+                    className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 capitalize"
+                  >
+                    Login
+                  </button>
+                </li>
               </ul>
             </div>
           )}
