@@ -6,6 +6,7 @@ import PropertyDetail from './PropertyDetail';
 import RentalWebsite from './components/RentalWebsite';
 import MyFavorites from './components/MyFavorites';
 import AdminDashboard from './AdminDashboard';
+import Reseller from './components/Reseller';
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
       
       {/* Admin Dashboard */}
       <Route path="/admin" element={<AdminDashboard />} />
+      {/* Reseller Page */}
+      <Route path="/reseller" element={<Reseller />} />
     </Routes>
   );
 }

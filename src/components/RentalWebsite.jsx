@@ -16,6 +16,8 @@ const RentalWebsite = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [favorites, setFavorites] = useState(new Set());
   const [currentImageIndex, setCurrentImageIndex] = useState({});
+  const [commentInput, setCommentInput] = useState("");
+  const [comments, setComments] = useState([]);
   const intervalRef = useRef({});
 
   const properties = [
@@ -280,7 +282,7 @@ const RentalWebsite = () => {
             
             {/* Desktop Menu */}
            <ul className="hidden md:flex space-x-8">
-  {['home', 'properties', 'services', 'about'].map(item => (
+  {['home', 'properties', 'services'].map(item => (
     <li key={item}>
       <button
         onClick={() => scrollToSection(item)}
@@ -291,6 +293,15 @@ const RentalWebsite = () => {
       </button>
     </li>
   ))}
+  <li>
+    <button
+      onClick={() => scrollToSection('comment')}
+      className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
+    >
+      Comment
+      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+    </button>
+  </li>
   <li>
     <button
       onClick={() => navigate('/favorites')}
@@ -311,7 +322,7 @@ const RentalWebsite = () => {
       onClick={() => navigate('/login')}
       className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
     >
-      login
+      login/register
       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
     </button>
   </li>
@@ -331,7 +342,7 @@ const RentalWebsite = () => {
           {isMenuOpen && (
             <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
               <ul className="space-y-2 pt-4">
-                {['home', 'properties', 'services', 'about', 'contact'].map(item => (
+                {['home', 'properties', 'services', 'comment', 'contact'].map(item => (
                   <li key={item}>
                     <button
                       onClick={() => scrollToSection(item)}
@@ -368,7 +379,7 @@ const RentalWebsite = () => {
                     }}
                     className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 capitalize"
                   >
-                    Login
+                    login/register
                   </button>
                 </li>
               </ul>
@@ -716,6 +727,54 @@ const RentalWebsite = () => {
         </div>
       </section>
 
+      {/* Comment Section */}
+      <section id="comment" className="py-20 bg-white">
+        <div className="max-w-2xl mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Leave a Comment</h2>
+            <p className="text-gray-600">We value your feedback! Share your thoughts or experiences below.</p>
+          </div>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              if (commentInput.trim()) {
+                setComments(prev => [commentInput.trim(), ...prev]);
+                setCommentInput("");
+              }
+            }}
+            className="mb-8"
+          >
+            <textarea
+              className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 resize-none"
+              rows={4}
+              placeholder="Write your comment here..."
+              value={commentInput}
+              onChange={e => setCommentInput(e.target.value)}
+              required
+            />
+            <button
+              type="submit"
+              className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold text-lg shadow hover:shadow-lg transition-all duration-300"
+            >
+              Submit Comment
+            </button>
+          </form>
+          <div>
+            {comments.length === 0 ? (
+              <div className="text-gray-400 text-center">No comments yet. Be the first to comment!</div>
+            ) : (
+              <ul className="space-y-4">
+                {comments.map((comment, idx) => (
+                  <li key={idx} className="bg-gray-50 p-4 rounded-lg shadow">
+                    <div className="text-gray-700">{comment}</div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer id="contact" className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
@@ -785,22 +844,6 @@ const RentalWebsite = () => {
               </div>
             </div>
             
-            <div>
-              <h3 className="text-xl font-semibold mb-6">Newsletter</h3>
-              <p className="text-gray-300 mb-4">
-                Subscribe to get updates on new properties and exclusive offers.
-              </p>
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <button className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-r-lg hover:shadow-lg transition-all duration-300">
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
           </div>
           
           <div className="border-t border-gray-700 pt-8 text-center">
