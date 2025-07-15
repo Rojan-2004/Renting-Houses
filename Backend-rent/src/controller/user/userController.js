@@ -18,9 +18,20 @@ export const getAll = async (req, res) => {
  */
 export const create = async (req, res) => {
     try {
-        // your create logic here
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) {
+            return res.json({ message: 'Name, email, and password are required.', status: false });
+        }
+        // Check if user already exists
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            return res.json({ message: 'Email already registered.' , status: false});
+        }
+        // Create new user
+        const newUser = await User.create({ name, email, password });
+        res.json({ message: 'User registered successfully', data: { id: newUser.id, name: newUser.name, email: newUser.email }, status: true });
     } catch (e) {
-        res.status(500).json({ error: 'Failed to create user' });
+        res.json({ message: 'Failed to create user', status: false });
     }
 };
 
