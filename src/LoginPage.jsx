@@ -185,17 +185,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
-      <nav className="flex justify-between items-center px-8 py-4 bg-white shadow-md">
-        <div className="flex items-center space-x-2">
-          <img src="/logo.png" alt="Logo" className="h-10 w-10" />
-          <span className="text-xl font-bold">RENTAL BUDDY</span>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* Header */}
+      <header className="w-full bg-blue-600 py-4 shadow-md">
+        <div className="max-w-5xl mx-auto px-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center space-x-2">
+            <img src="/logo.png" alt="Rental Buddy" className="h-10 w-10" />
+            <span className="text-white text-2xl font-bold">Rental Buddy</span>
+          </Link>
+          <nav className="space-x-6 text-white text-sm font-medium">
+            <Link to="/about" className="hover:underline">About Us</Link>
+            <Link to="/contact" className="hover:underline">Contact Us</Link>
+            <Link to="/help" className="hover:underline">Help</Link>
+            <Link to="/privacy" className="hover:underline">Privacy Policy</Link>
+            <Link to="/disclaimer" className="hover:underline">Disclaimer</Link>
+          </nav>
         </div>
-        <ul className="flex space-x-6 text-sm font-medium">
-          <li><Link to="/" className="hover:text-blue-600">Home</Link></li>
-        </ul>
-      </nav>
+      </header>
 
       {/* Main Section */}
       <div className="flex flex-col md:flex-row flex-grow">
@@ -333,6 +339,28 @@ export default function LoginPage() {
           </div>
         </div>
       )}
+
+      {/* Footer */}
+      <footer className="bg-white py-6 border-t">
+        <div className="flex flex-col items-center">
+          <img src="/logo.png" alt="Rental Buddy" className="h-12 mb-2" />
+          <p className="text-sm text-center">44800,Bhaktapur,Srijana Nagar,Kathamndu Valley,Nepal</p>
+          <p className="text-sm">(123) 456-7890 | rentalbuddy@gmail.com</p>
+          <div className="flex space-x-3 mt-2">
+            <a href="#"><i className="fab fa-facebook"></i></a>
+            <a href="#"><i className="fab fa-twitter"></i></a>
+            <a href="#"><i className="fab fa-linkedin"></i></a>
+            <a href="#"><i className="fab fa-instagram"></i></a>
+          </div>
+          <div className="mt-4 space-x-4 text-xs">
+            <Link to="/about">ABOUT US</Link>
+            <Link to="/contact">CONTACT US</Link>
+            <Link to="/help">HELP</Link>
+            <Link to="/privacy">PRIVACY POLICY</Link>
+            <Link to="/disclaimer">DISCLAIMER</Link>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
