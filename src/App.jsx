@@ -1,90 +1,65 @@
-<<<<<<< HEAD
-
-// import React from 'react';
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import SignUp from './SignUp';
-// import LoginPage from './LoginPage';
-// import PropertyDetail from './PropertyDetail'; // make sure the path is correct
-// import RentalWebsite from './Components/RentalWebsite';
-
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-
-//         {/* Home, Landlord, Tenants, etc. can be added later */}
-//         <Route path="/signup" element={<SignUp />} />
-//         <Route path="/" element={<RentalWebsite/>} />
-//         <Route path="/login" element={<LoginPage/>} />
-//         {/* Property Detail Page (dynamic ID) */}
-//         <Route path="/property/:id" element={<PropertyDetail />} />
-    
-//       </Routes>
-//     </Router>
-//   );
-// }
-
-// export default App;
-
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
-
-import SignUp from './SignUp';
-import LoginPage from './LoginPage';
-import PropertyDetail from './PropertyDetail';
-import RentalWebsite from './Components/RentalWebsite';
-import BookingPage from './BookingPage'; // ✅ newly added
-
-function AnimatedRoutes() {
-  const location = useLocation();
-
-  return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<RentalWebsite />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/property/:id" element={<PropertyDetail />} />
-        <Route path="/booking/:id" element={<BookingPage />} />
-      </Routes>
-    </AnimatePresence>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <AnimatedRoutes />
-    </Router>
-=======
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import SignUp from './pages/auth/SignUp';
 import LoginPage from './pages/auth/LoginPage';
 import PropertyDetail from './pages/user/PropertyDetail';
 import RentalWebsite from './pages/RentalWebsite';
 import MyFavorites from './pages/user/MyFavorites';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminDashboardHome from './pages/admin/AdminDashboardHome';
+import AdminProperties from './pages/admin/AdminProperties';
+import AdminUsers from './pages/admin/AdminUsers';
+import AdminTransactions from './pages/admin/AdminTransactions';
+import AdminReports from './pages/admin/AdminReports';
+import AdminMessages from './pages/admin/AdminMessages';
+import AdminSettings from './pages/admin/AdminSettings';
+import SellerDashboard from './pages/seller/SellerDashboard';
+import SellerDashboardHome from './pages/seller/SellerDashboardHome';
+import SellerProperties from './pages/seller/SellerProperties';
+import SellerTransactions from './pages/seller/SellerTransactions';
+import SellerMessages from './pages/seller/SellerMessages';
+import SellerSettings from './pages/seller/SellerSettings';
+import BookingPage from './BookingPage';
+import AboutPage from './pages/about/AboutPage';
+import ContactPage from './pages/contact/ContactPage';
+import HelpPage from './pages/help/HelpPage';
 
 function App() {
   return (
     <Routes>
       {/* Main Home Page */}
       <Route path="/" element={<RentalWebsite />} />
-      
       {/* Favorites Page */}
       <Route path="/favorites" element={<MyFavorites />} />
-      
       {/* Other routes */}
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/property/:id" element={<PropertyDetail />} />
-      
-      {/* Admin Dashboard */}
-      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/booking/:id" element={<BookingPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/help" element={<HelpPage />} />
+      {/* Admin Dashboard Nested Routes */}
+      <Route path="/admin" element={<AdminDashboard />}>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboardHome />} />
+        <Route path="properties" element={<AdminProperties />} />
+        <Route path="users" element={<AdminUsers />} />
+        <Route path="transactions" element={<AdminTransactions />} />
+        <Route path="reports" element={<AdminReports />} />
+        <Route path="messages" element={<AdminMessages />} />
+        <Route path="settings" element={<AdminSettings />} />
+      </Route>
+      {/* Seller Dashboard Nested Routes */}
+      <Route path="/seller" element={<SellerDashboard />}>
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<SellerDashboardHome />} />
+        <Route path="properties" element={<SellerProperties />} />
+        <Route path="transactions" element={<SellerTransactions />} />
+        <Route path="messages" element={<SellerMessages />} />
+        <Route path="settings" element={<SellerSettings />} />
+      </Route>
     </Routes>
->>>>>>> 0e1c8ba04450bce82bcb326ef4c10a3264df6bac
   );
 }
 
