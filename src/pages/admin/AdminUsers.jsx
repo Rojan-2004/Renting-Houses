@@ -1,17 +1,48 @@
-import React, { useState } from 'react';
-import { Search, Ban, ShieldCheck, Users } from 'lucide-react';
-
-const mockUsers = [
-  { id: 1, name: 'Allena', email: 'allena@email.com', role: 'Landlord', status: 'Active' },
-  { id: 2, name: 'Prakriti', email: 'prakriti@email.com', role: 'Renter', status: 'Banned' },
-  { id: 3, name: 'Ramesh', email: 'ramesh@email.com', role: 'Renter', status: 'Active' },
-];
+import React, { useState, useEffect } from 'react';
+import { Search, Ban, ShieldCheck, Users, Trash2 } from 'lucide-react';
 
 export default function AdminUsers() {
   const [search, setSearch] = useState('');
-  const filtered = mockUsers.filter(u =>
-    u.name.toLowerCase().includes(search.toLowerCase()) ||
-    u.email.toLowerCase().includes(search.toLowerCase())
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/users')
+      .then(res => res.json())
+      .then(data => setUsers(data.data || []));
+  }, []);
+
+  const handleBan = async (id) => {
+    const res = await fetch(`/api/users/${id}/ban`, { method: 'PUT' });
+    if (res.ok) {
+      setUsers(users => users.map(u => u.id === id ? { ...u, status: 'Banned' } : u));
+    } else {
+      alert('Failed to ban user.');
+    }
+  };
+  const handleUnban = async (id) => {
+    const res = await fetch(`/api/users/${id}/unban`, { method: 'PUT' });
+    if (res.ok) {
+      setUsers(users => users.map(u => u.id === id ? { ...u, status: 'Active' } : u));
+    } else {
+      alert('Failed to unban user.');
+    }
+  };
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this user?')) return;
+    const res = await fetch(`/api/users/${id}/delete`, { method: 'DELETE' });
+    if (res.ok) {
+      setUsers(users => users.filter(u => u.id !== id));
+    } else {
+      alert('Failed to delete user.');
+    }
+  };
+
+  const searchTerm = search.trim().toLowerCase();
+  const filtered = users.filter(u =>
+    u.name.toLowerCase().includes(searchTerm) ||
+    u.email.toLowerCase().includes(searchTerm) ||
+    (u.role || 'user').toLowerCase().includes(searchTerm) ||
+    (u.status || '').toLowerCase().includes(searchTerm)
   );
   return (
     <div className="space-y-8">
@@ -47,16 +78,17 @@ export default function AdminUsers() {
                 <td className="py-2 px-4">{u.id}</td>
                 <td className="py-2 px-4">{u.name}</td>
                 <td className="py-2 px-4">{u.email}</td>
-                <td className="py-2 px-4">{u.role}</td>
+                <td className="py-2 px-4">{u.role || 'User'}</td>
                 <td className="py-2 px-4">
                   <span className={`px-2 py-1 rounded text-xs font-semibold ${u.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{u.status}</span>
                 </td>
                 <td className="py-2 px-4 flex gap-2">
                   {u.status === 'Active' ? (
-                    <button className="bg-red-400 hover:bg-red-600 text-white px-2 py-1 rounded transition" title="Ban"><Ban className="w-4 h-4" /></button>
+                    <button className="bg-red-400 hover:bg-red-600 text-white px-2 py-1 rounded transition" title="Ban" onClick={() => handleBan(u.id)}><Ban className="w-4 h-4" /></button>
                   ) : (
-                    <button className="bg-green-400 hover:bg-green-600 text-white px-2 py-1 rounded transition" title="Unban"><ShieldCheck className="w-4 h-4" /></button>
+                    <button className="bg-green-400 hover:bg-green-600 text-white px-2 py-1 rounded transition" title="Unban" onClick={() => handleUnban(u.id)}><ShieldCheck className="w-4 h-4" /></button>
                   )}
+                  <button className="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded transition" title="Delete" onClick={() => handleDelete(u.id)}><Trash2 className="w-4 h-4" /></button>
                 </td>
               </tr>
             ))}

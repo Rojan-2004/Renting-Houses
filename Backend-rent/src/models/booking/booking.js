@@ -27,6 +27,10 @@ export const Booking = sequelize.define('Booking', {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'Confirmed'
+  },
+  amount: {
+    type: DataTypes.FLOAT,
+    allowNull: false
   }
 }, {
   timestamps: true

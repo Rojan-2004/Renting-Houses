@@ -6,6 +6,7 @@ import SellerProperties from './SellerProperties';
 import SellerTransactions from './SellerTransactions';
 import SellerMessages from './SellerMessages';
 import SellerSettings from './SellerSettings';
+import LogoutHandler from '../../components/LogoutHandler';
 
 const navLinks = [
   { to: '/seller/dashboard', label: 'Dashboard', icon: <Home className="w-6 h-6" /> },
@@ -247,6 +248,7 @@ const SellerDashboard = () => {
             <Route path="/transactions" element={<SellerTransactions />} />
             <Route path="/messages" element={<SellerMessages />} />
             <Route path="/settings" element={<SellerSettings />} />
+            <Route path="/logout" element={<LogoutHandler />} />
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="*" element={<SellerDashboardHome />} />
           </Routes>

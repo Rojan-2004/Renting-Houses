@@ -147,41 +147,42 @@
 //   );
 // }
 
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
   const {
     register: registerLogin,
     handleSubmit: handleSubmitLogin,
     formState: { errors: loginErrors },
+    reset: resetLogin
   } = useForm();
+
   const {
     register: registerForgot,
     handleSubmit: handleSubmitForgot,
     formState: { errors: forgotErrors },
-    reset: resetForgot,
+    reset: resetForgot
   } = useForm();
-  const {
-    register: registerAdmin,
-    handleSubmit: handleSubmitAdmin,
-    formState: { errors: adminErrors },
-    reset: resetAdmin,
-  } = useForm();
-  const [successMessage, setSuccessMessage] = useState("");
-  const [showModal, setShowModal] = useState(false);
+
   const [otpSentMessage, setOtpSentMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showAdmin, setShowAdmin] = useState(false);
-  const [showAdminPassword, setShowAdminPassword] = useState(false);
-  const [adminLoginMessage, setAdminLoginMessage] = useState("");
-  const navigate = useNavigate();
 
   const onSubmitLogin = async (data) => {
     setSuccessMessage("");
     try {
+      // Prevent admin login through regular login form
+      if (data.email === "admin@gmail.com") {
+        setSuccessMessage("Please use the admin login page for admin access.");
+        return;
+      }
+      
       const response = await fetch("http://localhost:4000/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -192,46 +193,17 @@ export default function LoginPage() {
       });
       const result = await response.json();
       if (response.ok) {
+        localStorage.setItem('token', result.data.access_token);
+        localStorage.setItem('user', JSON.stringify(result.data.user));
         setSuccessMessage("Login successful!");
-        // Save token and user info to localStorage
-        if (result.data && result.data.access_token && result.data.user) {
-          localStorage.setItem('token', result.data.access_token);
-          localStorage.setItem('user', JSON.stringify(result.data.user));
-          window.dispatchEvent(new Event('userLogin'));
-        }
         setTimeout(() => {
-          navigate("/"); // Redirect to RentalWebsite
+          navigate("/");
         }, 1000);
       } else {
         setSuccessMessage(result.message || result.error || "Login failed.");
       }
     } catch (error) {
       setSuccessMessage("Login failed. Please try again.");
-    }
-  };
-
-  const onSubmitAdminLogin = async (data) => {
-    setAdminLoginMessage("");
-    try {
-      const response = await fetch("http://localhost:4000/api/auth/admin-login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: data.adminEmail,
-          password: data.adminPassword
-        })
-      });
-      const result = await response.json();
-      if (response.ok) {
-        setAdminLoginMessage("Admin login successful!");
-        setTimeout(() => {
-          navigate("/admin/dashboard");
-        }, 1000);
-      } else {
-        setAdminLoginMessage(result.message || result.error || "Admin login failed.");
-      }
-    } catch (error) {
-      setAdminLoginMessage("Admin login failed. Please try again later.");
     }
   };
 
@@ -267,29 +239,29 @@ export default function LoginPage() {
       </header>
       {/* Main Section */}
       <div className="flex-1 flex items-center justify-center w-full py-16 px-2 md:px-12">
-        {!showAdmin ? (
-          <div className="w-full max-w-md bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 flex flex-col items-center border border-blue-100 relative">
-            <h2 className="text-4xl font-extrabold mb-2 text-blue-700 tracking-tight drop-shadow text-center">Login</h2>
-            <p className="mb-6 text-gray-600 text-lg font-medium text-center">Welcome back! Please login to your account</p>
-            <form onSubmit={handleSubmitLogin(onSubmitLogin)} className="w-full space-y-6">
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400">
-                  <Mail className="w-5 h-5" />
-                </span>
-                <input
-                  type="email"
-                  placeholder="Email ID"
-                  {...registerLogin("email", {
-                    required: "Email is required",
-                    pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: "Invalid email"
-                    }
-                  })}
-                  className="w-full pl-10 pr-3 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition outline-none shadow-sm bg-blue-50 text-base"
-                />
-                {loginErrors.email && <p className="text-red-600 text-xs mt-1">{loginErrors.email.message}</p>}
-              </div>
+        <div className="w-full max-w-md bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 flex flex-col items-center border border-blue-100 relative">
+          <h2 className="text-4xl font-extrabold mb-2 text-blue-700 tracking-tight drop-shadow text-center">Login</h2>
+          <p className="mb-6 text-gray-600 text-lg font-medium text-center">Welcome back! Please login to your account</p>
+          <form onSubmit={handleSubmitLogin(onSubmitLogin)} className="w-full space-y-6">
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400">
+                <Mail className="w-5 h-5" />
+              </span>
+              <input
+                type="email"
+                placeholder="Email ID"
+                {...registerLogin("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^\S+@\S+$/i,
+                    message: "Invalid email"
+                  }
+                })}
+                className="w-full pl-10 pr-3 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition outline-none shadow-sm bg-blue-50 text-base"
+              />
+              {loginErrors.email && <p className="text-red-600 text-xs mt-1">{loginErrors.email.message}</p>}
+            </div>
+            <div className="space-y-2">
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400">
                   <Lock className="w-5 h-5" />
@@ -303,97 +275,37 @@ export default function LoginPage() {
                   })}
                   className="w-full pl-10 pr-10 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition outline-none shadow-sm bg-blue-50 text-base"
                 />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 cursor-pointer" onClick={() => setShowPassword(v => !v)}>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 cursor-pointer hover:text-blue-600 transition-colors" onClick={() => setShowPassword(v => !v)}>
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </span>
-                {loginErrors.password && <p className="text-red-600 text-xs mt-1">{loginErrors.password.message}</p>}
-                <div className="text-right mt-1">
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(true)}
-                    className="text-blue-600 text-sm hover:underline"
-                  >
-                    Forgot Password?
-                  </button>
-                </div>
               </div>
-              <button type="submit" className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:from-blue-700 hover:to-purple-700 transition text-lg mt-2">
-                Login
-              </button>
-            </form>
-            {successMessage && (
-              <p className="mt-4 text-green-600 font-semibold text-center">{successMessage}</p>
-            )}
-            <p className="mt-2 text-sm text-gray-600">
-              Don’t have an Account? <Link to="/signup" className="font-semibold text-blue-600 hover:underline">Sign Up</Link>
-            </p>
-            <button
-              className="mt-6 text-blue-600 underline hover:text-blue-800 font-semibold text-sm transition"
-              onClick={() => setShowAdmin(true)}
-            >
-              Login as admin?
+              {loginErrors.password && (
+                <p className="text-red-600 text-xs ml-1">{loginErrors.password.message}</p>
+              )}
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(true)}
+                  className="text-blue-600 text-sm hover:text-blue-700 hover:underline transition-colors font-medium"
+                >
+                  Forgot Password?
+                </button>
+              </div>
+            </div>
+            <button type="submit" className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:from-blue-700 hover:to-purple-700 transition text-lg mt-2">
+              Login
             </button>
-          </div>
-        ) : (
-          <div className="w-full max-w-md bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 flex flex-col items-center border border-blue-100 relative">
-            <h2 className="text-4xl font-extrabold mb-2 text-purple-700 tracking-tight drop-shadow text-center">Admin Login</h2>
-            <p className="mb-6 text-gray-600 text-lg font-medium text-center">Login to your admin account</p>
-            <form onSubmit={handleSubmitAdmin(onSubmitAdminLogin)} className="w-full space-y-6">
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400">
-                  <Mail className="w-5 h-5" />
-                </span>
-                <input
-                  type="email"
-                  placeholder="Admin Email"
-                  {...registerAdmin("adminEmail", {
-                    required: "Admin email is required",
-                    pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: "Invalid email"
-                    }
-                  })}
-                  className="w-full pl-10 pr-3 py-3 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition outline-none shadow-sm bg-purple-50 text-base"
-                />
-                {adminErrors && adminErrors.adminEmail && <p className="text-red-600 text-xs mt-1">{adminErrors.adminEmail.message}</p>}
-              </div>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-400">
-                  <Lock className="w-5 h-5" />
-                </span>
-                <input
-                  type={showAdminPassword ? "text" : "password"}
-                  placeholder="Admin Password"
-                  {...registerAdmin("adminPassword", {
-                    required: "Admin password is required",
-                    minLength: { value: 6, message: "Minimum 6 characters" }
-                  })}
-                  className="w-full pl-10 pr-10 py-3 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition outline-none shadow-sm bg-purple-50 text-base"
-                />
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-purple-400 cursor-pointer" onClick={() => setShowAdminPassword(v => !v)}>
-                  {showAdminPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </span>
-                {adminErrors && adminErrors.adminPassword && <p className="text-red-600 text-xs mt-1">{adminErrors.adminPassword.message}</p>}
-              </div>
-              <button type="submit" className="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-bold shadow-lg hover:from-purple-700 hover:to-blue-700 transition text-lg mt-2">
-                Login as Admin
-              </button>
-            </form>
-            {adminLoginMessage && (
-              <p className="mt-4 text-green-600 font-semibold text-center">{adminLoginMessage}</p>
-            )}
-            <button
-              className="mt-6 text-purple-600 underline hover:text-purple-800 font-semibold text-sm transition"
-              onClick={() => {
-                setShowAdmin(false);
-                setAdminLoginMessage("");
-                resetAdmin();
-              }}
-            >
-              Back to user login
-            </button>
-          </div>
-        )}
+          </form>
+          {successMessage && (
+            <p className="mt-4 text-green-600 font-semibold text-center">{successMessage}</p>
+          )}
+          <p className="mt-2 text-sm text-gray-600">
+            Don't have an Account? <Link to="/signup" className="font-semibold text-blue-600 hover:underline">Sign Up</Link>
+          </p>
+          <p className="mt-2 text-sm text-gray-600">
+            <Link to="/admin-login" className="font-semibold text-purple-600 hover:underline">Login as admin</Link>
+          </p>
+        </div>
       </div>
       {/* Forgot Password Modal */}
       {showModal && (
@@ -410,7 +322,7 @@ export default function LoginPage() {
                 </span>
                 <input
                   type="email"
-                  placeholder="Email ID"
+                  placeholder="Email Address"
                   {...registerForgot("email", {
                     required: "Email is required",
                     pattern: {
@@ -422,22 +334,29 @@ export default function LoginPage() {
                 />
                 {forgotErrors.email && <p className="text-red-600 text-xs mt-1">{forgotErrors.email.message}</p>}
               </div>
-              <button
-                type="submit"
-                className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:from-blue-700 hover:to-purple-700 transition text-lg mt-2"
-              >
-                Send OTP
-              </button>
+              <div className="flex gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(false);
+                    setOtpSentMessage("");
+                    resetForgot();
+                  }}
+                  className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl font-semibold hover:bg-gray-200 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold shadow hover:from-blue-700 hover:to-purple-700 transition"
+                >
+                  Send Reset Link
+                </button>
+              </div>
             </form>
             {otpSentMessage && (
               <p className="mt-4 text-green-600 font-semibold text-center">{otpSentMessage}</p>
             )}
-            <p
-              className="mt-4 text-center text-sm text-blue-600 hover:underline cursor-pointer"
-              onClick={() => setShowModal(false)}
-            >
-              Return to Login
-            </p>
           </div>
         </div>
       )}

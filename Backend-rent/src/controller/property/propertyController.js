@@ -1,4 +1,4 @@
-import { Property } from '../../models/index.js';
+import { Property, User } from '../../models/index.js';
 
 export const createProperty = async (req, res) => {
   try {
@@ -11,8 +11,15 @@ export const createProperty = async (req, res) => {
 
 export const getAllProperties = async (req, res) => {
   try {
-    const properties = await Property.findAll();
-    res.status(200).json({ data: properties });
+    const properties = await Property.findAll({
+      include: [{ model: User, attributes: ['name'] }]
+    });
+    // Map to include owner name at top level
+    const result = properties.map(p => ({
+      ...p.toJSON(),
+      owner: p.User ? p.User.name : 'Unknown'
+    }));
+    res.status(200).json({ data: result });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching properties', error: error.message });
   }
@@ -50,10 +57,20 @@ export const deleteProperty = async (req, res) => {
   }
 };
 
+export const getPropertyCount = async (req, res) => {
+  try {
+    const count = await Property.count();
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch property count' });
+  }
+};
+
 export const propertyController = {
   createProperty,
   getAllProperties,
   getPropertyById,
   updateProperty,
   deleteProperty,
+  getPropertyCount
 }; 

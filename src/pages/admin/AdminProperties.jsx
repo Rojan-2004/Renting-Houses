@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
-import { Search, CheckCircle, XCircle, Edit2, Home } from 'lucide-react';
-
-const mockProperties = [
-  { id: 1, name: 'Luxury Villa', owner: 'Allena', type: 'Villa', status: 'Pending' },
-  { id: 2, name: 'City Apartment', owner: 'Prakriti', type: 'Apartment', status: 'Approved' },
-  { id: 3, name: 'Family House', owner: 'Ramesh', type: 'House', status: 'Rejected' },
-];
+import React, { useState, useEffect } from 'react';
+import { Search, CheckCircle, XCircle, Edit2, Home, Trash2 } from 'lucide-react';
 
 export default function AdminProperties() {
   const [search, setSearch] = useState('');
-  const filtered = mockProperties.filter(p =>
+  const [properties, setProperties] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/properties')
+      .then(res => res.json())
+      .then(data => setProperties(data.data || []));
+  }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this property?')) return;
+    const res = await fetch(`/api/properties/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+      setProperties(props => props.filter(p => p.id !== id));
+    } else {
+      alert('Failed to delete property.');
+    }
+  };
+
+  const filtered = properties.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
-    p.owner.toLowerCase().includes(search.toLowerCase())
+    (p.owner || '').toLowerCase().includes(search.toLowerCase())
   );
   return (
     <div className="space-y-8">
@@ -55,6 +67,7 @@ export default function AdminProperties() {
                   <button className="bg-green-400 hover:bg-green-600 text-white px-2 py-1 rounded transition" title="Approve"><CheckCircle className="w-4 h-4" /></button>
                   <button className="bg-red-400 hover:bg-red-600 text-white px-2 py-1 rounded transition" title="Reject"><XCircle className="w-4 h-4" /></button>
                   <button className="bg-sky-400 hover:bg-sky-600 text-white px-2 py-1 rounded transition" title="Edit"><Edit2 className="w-4 h-4" /></button>
+                  <button className="bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded transition" title="Delete" onClick={() => handleDelete(p.id)}><Trash2 className="w-4 h-4" /></button>
                 </td>
               </tr>
             ))}

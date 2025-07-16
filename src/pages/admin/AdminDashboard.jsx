@@ -8,6 +8,7 @@ import AdminTransactions from './AdminTransactions';
 import AdminReports from './AdminReports';
 import AdminMessages from './AdminMessages';
 import AdminSettings from './AdminSettings';
+import LogoutHandler from '../../components/LogoutHandler';
 
 const navLinks = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: <Home className="w-5 h-5 mr-2" /> },
@@ -68,6 +69,7 @@ const AdminDashboard = () => {
             <Route path="/reports" element={<AdminReports />} />
             <Route path="/messages" element={<AdminMessages />} />
             <Route path="/settings" element={<AdminSettings />} />
+            <Route path="/logout" element={<LogoutHandler />} />
             <Route path="*" element={<AdminDashboardHome />} />
           </Routes>
         </main>

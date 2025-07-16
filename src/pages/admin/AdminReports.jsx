@@ -1,19 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BarChart2, Building2, Users, DollarSign, Activity } from 'lucide-react';
 
-const stats = [
-  { label: 'Properties', value: 128, icon: <Building2 className="w-6 h-6 text-sky-500" /> },
-  { label: 'Users', value: 542, icon: <Users className="w-6 h-6 text-sky-500" /> },
-  { label: 'Revenue', value: 'NPR 2,500,000', icon: <DollarSign className="w-6 h-6 text-sky-500" /> },
-];
-
-const recent = [
-  { action: 'New property added', date: '2024-06-01' },
-  { action: 'User registered', date: '2024-06-02' },
-  { action: 'Transaction completed', date: '2024-06-03' },
-];
-
 export default function AdminReports() {
+  const [userCount, setUserCount] = useState(0);
+  const [propertyCount, setPropertyCount] = useState(0);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:4000/api/users/count', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(data => setUserCount(data.count || 0));
+    fetch('http://localhost:4000/api/properties/count', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(data => setPropertyCount(data.count || 0));
+  }, []);
+
+  const stats = [
+    { label: 'Properties', value: propertyCount, icon: <Building2 className="w-6 h-6 text-sky-500" /> },
+    { label: 'Users', value: userCount, icon: <Users className="w-6 h-6 text-sky-500" /> },
+    { label: 'Revenue', value: 'NPR 2,500,000', icon: <DollarSign className="w-6 h-6 text-sky-500" /> },
+  ];
+
+  const recent = [
+    { action: 'New property added', date: '2024-06-01' },
+    { action: 'User registered', date: '2024-06-02' },
+    { action: 'Transaction completed', date: '2024-06-03' },
+  ];
+
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-4 mb-4">

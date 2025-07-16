@@ -1,12 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Building2, Users, Receipt, DollarSign, Activity } from 'lucide-react';
-
-const stats = [
-  { label: 'Total Properties', value: 128, icon: <Building2 className="w-7 h-7 text-sky-500" /> },
-  { label: 'Total Users', value: 542, icon: <Users className="w-7 h-7 text-sky-500" /> },
-  { label: 'Transactions', value: 312, icon: <Receipt className="w-7 h-7 text-sky-500" /> },
-  { label: 'Revenue', value: 'NPR 2,500,000', icon: <DollarSign className="w-7 h-7 text-sky-500" /> },
-];
 
 const recentActivity = [
   { user: 'Allena', action: 'Added new property', time: '2 min ago' },
@@ -16,6 +9,42 @@ const recentActivity = [
 ];
 
 export default function AdminDashboardHome() {
+  const [userCount, setUserCount] = useState(0);
+  const [propertyCount, setPropertyCount] = useState(0);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:4000/api/users/count', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then(async res => {
+        const data = await res.json().catch(() => ({}));
+        console.log('User count response:', res.status, data);
+        return data;
+      })
+      .then(data => setUserCount(data.count || 0));
+    fetch('http://localhost:4000/api/properties/count', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then(async res => {
+        const data = await res.json().catch(() => ({}));
+        console.log('Property count response:', res.status, data);
+        return data;
+      })
+      .then(data => setPropertyCount(data.count || 0));
+  }, []);
+
+  const stats = [
+    { label: 'Total Properties', value: propertyCount, icon: <Building2 className="w-7 h-7 text-sky-500" /> },
+    { label: 'Total Users', value: userCount, icon: <Users className="w-7 h-7 text-sky-500" /> },
+    { label: 'Transactions', value: 312, icon: <Receipt className="w-7 h-7 text-sky-500" /> },
+    { label: 'Revenue', value: 'NPR 2,500,000', icon: <DollarSign className="w-7 h-7 text-sky-500" /> },
+  ];
+
   return (
     <div className="space-y-8">
       {/* Stat Cards */}

@@ -10,6 +10,7 @@ import { createUploadsFolder } from "./security/helper.js";
 import cors from "cors"
 import { bookingRouter } from "./route/booking/bookingRoute.js";
 import { propertyRouter } from "./route/property/propertyRoute.js";
+import './models/index.js';
 
 dotenv.config();
 

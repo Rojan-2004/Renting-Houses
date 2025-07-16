@@ -25,6 +25,8 @@ import BookingPage from './BookingPage';
 import AboutPage from './pages/about/AboutPage';
 import ContactPage from './pages/contact/ContactPage';
 import HelpPage from './pages/help/HelpPage';
+import LogoutHandler from './components/LogoutHandler';
+import AdminLogin from './pages/auth/AdminLogin';
 
 function App() {
   return (
@@ -36,6 +38,7 @@ function App() {
       {/* Other routes */}
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/admin-login" element={<AdminLogin />} />
       <Route path="/property/:id" element={<PropertyDetail />} />
       <Route path="/order-history" element={<OrderHistory />} />
       <Route path="/booking/:id" element={<BookingPage />} />
@@ -43,7 +46,7 @@ function App() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/help" element={<HelpPage />} />
       {/* Admin Dashboard Nested Routes */}
-      <Route path="/admin" element={<AdminDashboard />}>
+      <Route path="/admin/*" element={<AdminDashboard />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<AdminDashboardHome />} />
         <Route path="properties" element={<AdminProperties />} />
@@ -52,15 +55,17 @@ function App() {
         <Route path="reports" element={<AdminReports />} />
         <Route path="messages" element={<AdminMessages />} />
         <Route path="settings" element={<AdminSettings />} />
+        <Route path="logout" element={<LogoutHandler />} />
       </Route>
       {/* Seller Dashboard Nested Routes */}
-      <Route path="/seller" element={<SellerDashboard />}>
+      <Route path="/seller/*" element={<SellerDashboard />}>
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<SellerDashboardHome />} />
         <Route path="properties" element={<SellerProperties />} />
         <Route path="transactions" element={<SellerTransactions />} />
         <Route path="messages" element={<SellerMessages />} />
         <Route path="settings" element={<SellerSettings />} />
+        <Route path="logout" element={<LogoutHandler />} />
       </Route>
       {/* Reseller Page */}
       <Route path="/reseller" element={<Reseller />} />

@@ -3,6 +3,20 @@ import { generateToken } from "../../security/jwt-util.js";
 
 const login = async (req, res) => {
   try {
+    // Hardcoded admin login
+    if (req.body.email === "admin@gmail.com" && req.body.password === "admin123") {
+      const adminUser = {
+        id: 0,
+        name: "Admin",
+        email: "admin@gmail.com",
+        role: "admin"
+      };
+      const token = generateToken({ user: adminUser });
+      return res.status(200).send({
+        data: { access_token: token, user: adminUser },
+        message: "successfully logged in as admin",
+      });
+    }
     //fetching all the data from users table
     if (req.body.email == null) {
       return res.status(500).send({ message: "email is required" });

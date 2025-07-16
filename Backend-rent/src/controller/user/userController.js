@@ -68,10 +68,56 @@ export const getById = async (req, res) => {
     }
 };
 
+export const getUserCount = async (req, res) => {
+  try {
+    const count = await User.count();
+    res.status(200).json({ count });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to fetch user count' });
+  }
+};
+
+export const banUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    await user.update({ status: 'Banned' });
+    res.status(200).json({ message: 'User banned successfully' });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to ban user' });
+  }
+};
+
+export const unbanUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    await user.update({ status: 'Active' });
+    res.status(200).json({ message: 'User unbanned successfully' });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to unban user' });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    await user.destroy();
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+};
+
 export const userController = {
   getAll,
   create,
   update,
   delelteById,
-  getById
+  getById,
+  getUserCount,
+  banUser,
+  unbanUser,
+  deleteUser
 };
