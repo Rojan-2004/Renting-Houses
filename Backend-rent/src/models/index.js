@@ -3,12 +3,15 @@ import { Comment } from "./comment/comment.js";
 import { Favorite } from "./favorite/favorite.js";
 import { Like } from "./like/like.js";
 import { Booking } from "./booking/booking.js";
+import { Property } from "./property/property.js";
 
 // User associations
 User.hasMany(Comment, { foreignKey: 'userId' });
 User.hasMany(Favorite, { foreignKey: 'userId' });
 User.hasMany(Booking, { foreignKey: 'userId' });
+User.hasMany(Property, { foreignKey: 'userId' });
 Booking.belongsTo(User, { foreignKey: 'userId' });
+Property.belongsTo(User, { foreignKey: 'userId' });
 
 // Comment associations
 Comment.belongsTo(User, { foreignKey: 'userId' });
@@ -21,4 +24,4 @@ Favorite.belongsTo(User, { foreignKey: 'userId' });
 Like.belongsTo(User, { foreignKey: 'userId' });
 Like.belongsTo(Comment, { foreignKey: 'commentId' });
 
-export { User, Comment, Favorite, Like, Booking };
+export { User, Comment, Favorite, Like, Booking, Property };

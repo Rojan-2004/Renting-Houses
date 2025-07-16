@@ -17,7 +17,7 @@ const login = async (req, res) => {
     if (user.password == req.body.password) {
       const token = generateToken({ user: user.toJSON() });
       return res.status(200).send({
-        data: { access_token: token },
+        data: { access_token: token, user: user.toJSON() },
         message: "successfully logged in",
       });
     }

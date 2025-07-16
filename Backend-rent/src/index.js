@@ -9,6 +9,7 @@ import router from "./route/uploadRoutes.js";
 import { createUploadsFolder } from "./security/helper.js";
 import cors from "cors"
 import { bookingRouter } from "./route/booking/bookingRoute.js";
+import { propertyRouter } from "./route/property/propertyRoute.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/file", router);
 app.use("/api/bookings", bookingRouter);
+app.use("/api/properties", propertyRouter);
 createUploadsFolder();
 app.listen(4000, function () {
   console.log("project running in port ");

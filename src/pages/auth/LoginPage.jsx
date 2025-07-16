@@ -193,14 +193,20 @@ export default function LoginPage() {
       const result = await response.json();
       if (response.ok) {
         setSuccessMessage("Login successful!");
+        // Save token and user info to localStorage
+        if (result.data && result.data.access_token && result.data.user) {
+          localStorage.setItem('token', result.data.access_token);
+          localStorage.setItem('user', JSON.stringify(result.data.user));
+          window.dispatchEvent(new Event('userLogin'));
+        }
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate("/"); // Redirect to RentalWebsite
         }, 1000);
       } else {
         setSuccessMessage(result.message || result.error || "Login failed.");
       }
     } catch (error) {
-      setSuccessMessage("Login failed. Please try again later.");
+      setSuccessMessage("Login failed. Please try again.");
     }
   };
 

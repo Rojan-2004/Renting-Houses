@@ -19,6 +19,8 @@ const RentalWebsite = () => {
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState([]);
   const intervalRef = useRef({});
+  // Add user state for navbar
+  const [user, setUser] = useState(null);
 
   const properties = [
     {
@@ -261,6 +263,22 @@ const RentalWebsite = () => {
     { value: 'villa', label: 'Villas' }
   ];
 
+  // Add user state for navbar
+  useEffect(() => {
+    const updateUser = () => {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      } else {
+        setUser(null);
+      }
+    };
+    updateUser();
+    window.addEventListener('userLogin', updateUser);
+    return () => window.removeEventListener('userLogin', updateUser);
+  }, []);
+  console.log('Navbar user:', user);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -317,15 +335,21 @@ const RentalWebsite = () => {
       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
     </button>
   </li>
-  <li>
-    <button
-      onClick={() => navigate('/login')}
-      className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
-    >
-      login/register
-      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
-    </button>
-  </li>
+  {user ? (
+    <li>
+      <span className="text-blue-700 font-semibold px-4 py-2 rounded-lg bg-blue-50 border border-blue-200">{user.name}</span>
+    </li>
+  ) : (
+    <li>
+      <button
+        onClick={() => navigate('/login')}
+        className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
+      >
+        login/register
+        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+      </button>
+    </li>
+  )}
   <li>
     <button
       onClick={() => navigate('/order-history')}
@@ -381,17 +405,23 @@ const RentalWebsite = () => {
                     )}
                   </button>
                 </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      navigate('/login');
-                      setIsMenuOpen(false);
-                    }}
-                    className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 capitalize"
-                  >
-                    login/register
-                  </button>
-                </li>
+                {user ? (
+                  <li>
+                    <span className="block w-full text-left py-3 px-2 text-blue-700 font-semibold bg-blue-50 rounded-lg border border-blue-200">{user.name}</span>
+                  </li>
+                ) : (
+                  <li>
+                    <button
+                      onClick={() => {
+                        navigate('/login');
+                        setIsMenuOpen(false);
+                      }}
+                      className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 capitalize"
+                    >
+                      login/register
+                    </button>
+                  </li>
+                )}
                 <li>
                   <button
                     onClick={() => {

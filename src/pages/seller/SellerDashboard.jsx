@@ -21,17 +21,51 @@ const initialForm = { name: '', type: '', price: '', status: 'Active', descripti
 const SellerDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(initialForm);
+  const [image, setImage] = useState(null);
 
   const handleOpenModal = () => {
     setForm(initialForm);
+    setImage(null);
     setShowModal(true);
   };
   const handleCloseModal = () => setShowModal(false);
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
-  const handleSubmit = e => {
+  const handleImageChange = e => setImage(e.target.files[0]);
+  const handleSubmit = async e => {
     e.preventDefault();
-    // For now, just log the data
-    console.log('Property submitted:', form);
+    let imageFilename = null;
+    if (image) {
+      const formData = new FormData();
+      formData.append('file', image);
+      try {
+        const res = await fetch('/api/file/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+        imageFilename = data.filename || data.file || data.url || null;
+      } catch (err) {
+        alert('Image upload failed');
+        return;
+      }
+    }
+    // Add image filename and userId to property data
+    const user = JSON.parse(localStorage.getItem('user'));
+    const propertyData = { ...form, image: imageFilename, userId: user?.id };
+    try {
+      const res = await fetch('/api/properties', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(propertyData),
+      });
+      if (res.ok) {
+        alert('Property added successfully!');
+      } else {
+        alert('Failed to add property.');
+      }
+    } catch (err) {
+      alert('Failed to add property.');
+    }
     setShowModal(false);
   };
 
@@ -174,6 +208,15 @@ const SellerDashboard = () => {
                     value={form.description}
                     onChange={handleChange}
                     rows={3}
+                    className="w-full border border-emerald-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-400 outline-none bg-emerald-50"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-1">Property Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
                     className="w-full border border-emerald-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-400 outline-none bg-emerald-50"
                   />
                 </div>
