@@ -6,7 +6,8 @@ import PropertyDetail from './pages/user/PropertyDetail';
 import RentalWebsite from './pages/RentalWebsite';
 import MyFavorites from './pages/user/MyFavorites';
 import AdminDashboard from './pages/admin/AdminDashboard';
-import Reseller from './pages/reseller/Reseller';
+import Reseller from './components/Reseller';
+import OrderHistory from './pages/user/OrderHistory';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/property/:id" element={<PropertyDetail />} />
+      <Route path="/order-history" element={<OrderHistory />} />
       
       {/* Admin Dashboard */}
       <Route path="/admin" element={<AdminDashboard />} />

@@ -326,6 +326,16 @@ const RentalWebsite = () => {
       <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
     </button>
   </li>
+  <li>
+    <button
+      onClick={() => navigate('/order-history')}
+      className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group flex items-center"
+    >
+      <Calendar className="w-4 h-4 mr-1" />
+      Booking History
+      <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+    </button>
+  </li>
 </ul>
 
 
@@ -380,6 +390,20 @@ const RentalWebsite = () => {
                     className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 capitalize"
                   >
                     login/register
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      navigate('/order-history');
+                      setIsMenuOpen(false);
+                    }}
+                    className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 flex items-center justify-between"
+                  >
+                    <span className="flex items-center">
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Booking History
+                    </span>
                   </button>
                 </li>
               </ul>
