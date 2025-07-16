@@ -872,8 +872,7 @@ const RentalWebsite = () => {
           
           <div className="border-t border-gray-700 pt-8 text-center">
             <p className="text-gray-400">
-              &copy; 2025 Rental Buddy. All rights reserved. | 
-              <span className="text-blue-400 hover:text-blue-300 cursor-pointer"> Privacy Policy</span> | 
+              &copy; 2025 Rental Buddy. All rights reserved. |
               <span className="text-blue-400 hover:text-blue-300 cursor-pointer"> Terms of Service</span>
             </p>
           </div>
