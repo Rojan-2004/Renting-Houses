@@ -433,6 +433,15 @@ const RentalWebsite = () => {
         </div>
       </section>
 
+      <div className="w-full flex justify-center mt-8 mb-4">
+        <button
+          onClick={() => navigate('/properties')}
+          className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-bold text-xl shadow-lg hover:from-blue-700 hover:to-purple-700 transition"
+        >
+          Browse All Properties
+        </button>
+      </div>
+
       {/* Stats Section */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4">
@@ -595,7 +604,10 @@ const RentalWebsite = () => {
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2">{property.description}</p>
                   
                   <div className="flex gap-2">
-                    <button className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                    <button
+                      className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                      onClick={() => navigate(`/property/${property.id}`)}
+                    >
                       View Details
                     </button>
                     <button className="px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-300">

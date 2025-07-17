@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import SignUp from './pages/auth/SignUp';
 import LoginPage from './pages/auth/LoginPage';
 import PropertyDetail from './pages/user/PropertyDetail';
+import PropertyList from './pages/user/PropertyList';
 import RentalWebsite from './pages/RentalWebsite';
 import MyFavorites from './pages/user/MyFavorites';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -29,6 +30,8 @@ function App() {
     <Routes>
       {/* Main Home Page */}
       <Route path="/" element={<RentalWebsite />} />
+      {/* All Properties Page */}
+      <Route path="/properties" element={<PropertyList />} />
       {/* Favorites Page */}
       <Route path="/favorites" element={<MyFavorites />} />
       {/* Other routes */}
