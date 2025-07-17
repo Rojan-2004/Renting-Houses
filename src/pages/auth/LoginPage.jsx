@@ -177,11 +177,6 @@ export default function LoginPage() {
   const onSubmitLogin = async (data) => {
     setSuccessMessage("");
     try {
-      // Prevent admin login through regular login form
-      if (data.email === "admin@gmail.com") {
-        setSuccessMessage("Please use the admin login page for admin access.");
-        return;
-      }
       
       const response = await fetch("http://localhost:4000/api/auth/login", {
         method: "POST",
@@ -192,12 +187,16 @@ export default function LoginPage() {
         })
       });
       const result = await response.json();
-      if (response.ok) {
+      if (response.success) {
         localStorage.setItem('token', result.data.access_token);
         localStorage.setItem('user', JSON.stringify(result.data.user));
         setSuccessMessage("Login successful!");
         setTimeout(() => {
-          navigate("/");
+          if (result.user.role === 'seller') {
+          navigate("/seller/dashboard");
+          }else {
+            navigate("/");
+          }
         }, 1000);
       } else {
         setSuccessMessage(result.message || result.error || "Login failed.");

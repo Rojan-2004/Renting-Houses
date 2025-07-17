@@ -24,6 +24,13 @@ const SellerDashboard = () => {
   const [form, setForm] = useState(initialForm);
   const [image, setImage] = useState(null);
 
+  // Get user from localStorage
+  let userName = 'Seller';
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.name) userName = user.name;
+  } catch {}
+
   const handleOpenModal = () => {
     setForm(initialForm);
     setImage(null);
@@ -34,40 +41,53 @@ const SellerDashboard = () => {
   const handleImageChange = e => setImage(e.target.files[0]);
   const handleSubmit = async e => {
     e.preventDefault();
-    let imageFilename = null;
+    let imageUrl = null;
     if (image) {
       const formData = new FormData();
       formData.append('file', image);
       try {
         const res = await fetch('/api/file/upload', {
           method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          },
           body: formData,
         });
         const data = await res.json();
-        imageFilename = data.filename || data.file || data.url || null;
+        if (res.ok && data.file) {
+          imageUrl = `/uploads/${data.file.filename}`;
+        } else {
+          throw new Error(data.message || 'Image upload failed');
+        }
       } catch (err) {
-        alert('Image upload failed');
+        alert(err.message);
         return;
       }
     }
-    // Add image filename and userId to property data
-    const user = JSON.parse(localStorage.getItem('user'));
-    const propertyData = { ...form, image: imageFilename, userId: user?.id };
-    try {
-      const res = await fetch('/api/properties', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(propertyData),
-      });
-      if (res.ok) {
-        alert('Property added successfully!');
-      } else {
+    if (imageUrl) {
+      // Add image URL and userId to property data
+      const user = JSON.parse(localStorage.getItem('user'));
+      const propertyData = { ...form, image: imageUrl, userId: user?.id };
+      try {
+        const res = await fetch('/api/properties', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          },
+          body: JSON.stringify(propertyData),
+        });
+        if (res.ok) {
+          alert('Property added successfully!');
+        } else {
+          const errorData = await res.json();
+          alert(errorData.message || 'Failed to add property.');
+        }
+      } catch (err) {
         alert('Failed to add property.');
       }
-    } catch (err) {
-      alert('Failed to add property.');
+      setShowModal(false);
     }
-    setShowModal(false);
   };
 
   return (
@@ -124,7 +144,7 @@ const SellerDashboard = () => {
           <div className="flex items-center gap-4">
             <span className="text-2xl font-extrabold text-emerald-600 tracking-tight">Seller Panel</span>
             <span className="text-gray-400 font-medium hidden sm:inline">|</span>
-            <span className="text-emerald-700 font-semibold hidden sm:inline">Welcome, Seller</span>
+            <span className="text-emerald-700 font-semibold hidden sm:inline">Welcome, {userName}</span>
           </div>
           <div className="flex items-center gap-4">
             <button

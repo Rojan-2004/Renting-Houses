@@ -27,6 +27,7 @@ import ContactPage from './pages/contact/ContactPage';
 import HelpPage from './pages/help/HelpPage';
 import LogoutHandler from './components/LogoutHandler';
 import AdminLogin from './pages/auth/AdminLogin';
+import User from './pages/user/User';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/help" element={<HelpPage />} />
+      <Route path="/profile" element={<User />} />
       {/* Admin Dashboard Nested Routes */}
       <Route path="/admin/*" element={<AdminDashboard />}>
         <Route index element={<Navigate to="dashboard" replace />} />

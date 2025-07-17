@@ -1,64 +1,59 @@
 import { User } from "../../models/index.js";
 import { generateToken } from "../../security/jwt-util.js";
+import bcrypt from "bcrypt";
 
-const login = async (req, res) => {
+const register = async (req, res) => {
   try {
-    // Hardcoded admin login
-    if (req.body.email === "admin@gmail.com" && req.body.password === "admin123") {
-      const adminUser = {
-        id: 0,
-        name: "Admin",
-        email: "admin@gmail.com",
-        role: "admin"
-      };
-      const token = generateToken({ user: adminUser });
-      return res.status(200).send({
-        data: { access_token: token, user: adminUser },
-        message: "successfully logged in as admin",
-      });
+    const { name, email, password, role } = req.body;
+    if (!name || !email || !password) {
+      return res.json({ message: "Name, email, and password are required.", success: false });
     }
-    //fetching all the data from users table
-    if (req.body.email == null) {
-      return res.status(500).send({ message: "email is required" });
+    // Check for duplicate email
+    const existing = await User.findOne({ where: { email } });
+    if (existing) {
+      return res.json({ message: "Email already registered.", success: false });
     }
-    if (req.body.password == null) {
-      return res.status(500).send({ message: "email is required" });
-    }
-    const user = await User.findOne({ where: { email: req.body.email } });
-    if (!user) {
-      return res.status(500).send({ message: "user not found" });
-    }
-    if (user.password == req.body.password) {
-      const token = generateToken({ user: user.toJSON() });
-      return res.status(200).send({
-        data: { access_token: token, user: user.toJSON() },
-        message: "successfully logged in",
-      });
-    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, hashedPassword, status: 'Active', role: role || 'user' });
+    const token = generateToken({ id: user.id, role: user.role });
+    return res.json({
+      user,
+      token,
+      message: "Registration successful",
+      success: true,
+    });
   } catch (e) {
-    console.log(e);
-    res.status(500).json({ error: "Failed to login" });
+    res.json({ message: "Failed to register", error: e.message, success: false });
   }
 };
 
-/**
- *  init
- */
-
-const init = async (req, res) => {
+const login = async (req, res) => {
   try {
-    const user = req.user.user;
-    delete user.password;
-    res
-      .status(201)
-      .send({ data: user, message: "successfully fetched current  user" });
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.json({ message: "Email and password are required.", success: false });
+    }
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.json({ message: "User not found.", success: false });
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.hashedPassword);
+    if (!isPasswordValid) {
+      return res.json({ message: "Incorrect password.", success: false });
+    }
+    const token = generateToken({ id: user.id, role: user.role });
+    return res.json({
+      user,
+      token,
+      message: "Login successful",
+      success: true,
+    });
   } catch (e) {
-    console.log(e);
-    res.status(500).json({ error: "Failed to fetch users" });
+    res.json({ message: "Failed to login", error: e.message, success: false });
   }
 };
 
 export const authController = {
+  register,
   login,
-  init,
 };

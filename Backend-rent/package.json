@@ -4,13 +4,16 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "drop-db": "node drop-database.js --confirm",
+    "drop-db-full": "node drop-database.js --confirm --full"
   },
   "author": "",
   "type": "module",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

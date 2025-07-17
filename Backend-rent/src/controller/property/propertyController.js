@@ -2,6 +2,10 @@ import { Property, User } from '../../models/index.js';
 
 export const createProperty = async (req, res) => {
   try {
+    // Validation: Ensure image field is present
+    if (typeof req.body.image === 'undefined' || req.body.image === null || req.body.image === '') {
+      return res.status(400).json({ message: 'Image is required.' });
+    }
     const property = await Property.create(req.body);
     res.status(201).json({ data: property, message: 'Property created successfully' });
   } catch (error) {
@@ -11,7 +15,12 @@ export const createProperty = async (req, res) => {
 
 export const getAllProperties = async (req, res) => {
   try {
+    const where = {};
+    if (req.query.userId) {
+      where.userId = req.query.userId;
+    }
     const properties = await Property.findAll({
+      where,
       include: [{ model: User, attributes: ['name'] }]
     });
     // Map to include owner name at top level
@@ -51,7 +60,7 @@ export const deleteProperty = async (req, res) => {
     const property = await Property.findByPk(req.params.id);
     if (!property) return res.status(404).json({ message: 'Property not found' });
     await property.destroy();
-    res.status(200).json({ message: 'Property deleted successfully' });
+    res.status(204).send();
   } catch (error) {
     res.status(500).json({ message: 'Error deleting property', error: error.message });
   }

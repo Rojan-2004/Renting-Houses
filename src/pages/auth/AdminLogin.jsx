@@ -26,20 +26,12 @@ export default function AdminLogin() {
           password: data.adminPassword
         })
       });
-      const contentType = response.headers.get('content-type');
-      let result;
-      if (contentType && contentType.includes('application/json')) {
-        result = await response.json();
-      } else {
-        const text = await response.text();
-        setAdminLoginMessage('Unexpected response from server: ' + text);
-        return;
-      }
-      if (response.ok) {
-        setAdminLoginMessage("Admin login successful!");
+      let result = await response.json();
+      if (response.success && result.user.role === 'admin') {
         setTimeout(() => {
           navigate("/admin/dashboard");
         }, 1000);
+      
       } else {
         setAdminLoginMessage(result.message || result.error || "Admin login failed.");
       }

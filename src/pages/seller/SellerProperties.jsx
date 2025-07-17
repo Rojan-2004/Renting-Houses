@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Building2 } from 'lucide-react';
+import { Pie } from 'react-chartjs-2';
+import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+Chart.register(ArcElement, Tooltip, Legend);
 
 export default function SellerProperties() {
   const [search, setSearch] = useState('');
@@ -10,10 +13,11 @@ export default function SellerProperties() {
 
   useEffect(() => {
     const fetchProperties = async () => {
-      const res = await fetch('/api/properties');
+      if (!user?.id) return;
+      const res = await fetch(`/api/properties?userId=${user.id}`);
       const data = await res.json();
       if (res.ok && data.data) {
-        setProperties(data.data.filter(p => p.userId === user?.id));
+        setProperties(data.data);
       }
     };
     fetchProperties();
@@ -53,6 +57,33 @@ export default function SellerProperties() {
   const filtered = properties.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
+  // Property status summary
+  const total = properties.length;
+  const active = properties.filter(p => p.status === 'Active').length;
+  const inactive = properties.filter(p => p.status !== 'Active').length;
+
+  // Pie chart data
+  const pieData = {
+    labels: ['Active', 'Inactive'],
+    datasets: [
+      {
+        data: [active, inactive],
+        backgroundColor: ['#22c55e', '#facc15'],
+        borderColor: ['#16a34a', '#ca8a04'],
+        borderWidth: 1,
+      },
+    ],
+  };
+  const pieOptions = {
+    plugins: {
+      legend: {
+        display: true,
+        position: 'bottom',
+      },
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+  };
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-4 mb-4">
@@ -67,6 +98,16 @@ export default function SellerProperties() {
             className="border rounded px-2 py-1"
           />
         </div>
+      </div>
+      {/* Pie Chart for property status */}
+      <div className="w-full max-w-xs mx-auto" style={{ height: 220 }}>
+        <Pie data={pieData} options={pieOptions} />
+      </div>
+      {/* Live stats summary */}
+      <div className="flex gap-6 mb-2 text-sm">
+        <span className="font-semibold">Total: <span className="text-blue-700">{total}</span></span>
+        <span className="font-semibold">Active: <span className="text-green-700">{active}</span></span>
+        <span className="font-semibold">Inactive: <span className="text-yellow-700">{inactive}</span></span>
       </div>
       <div className="overflow-x-auto bg-white rounded-2xl shadow">
         <table className="min-w-full">

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Home, MapPin, Bed, Bath, Square, Star, Phone, Mail, Menu, X, Check, 
   ArrowRight, Calendar, Users, Shield, Award, Filter, Search, Heart,
-  Facebook, Instagram, Linkedin, Twitter, Play, Eye, ChevronLeft, ChevronRight
+  Facebook, Instagram, Linkedin, Twitter, Play, Eye, ChevronLeft, ChevronRight, Building2
 } from 'lucide-react';
 
 const RentalWebsite = () => {
@@ -21,6 +21,7 @@ const RentalWebsite = () => {
   const intervalRef = useRef({});
   // Add user state for navbar
   const [user, setUser] = useState(null);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const properties = [
     {
@@ -277,6 +278,22 @@ const RentalWebsite = () => {
     window.addEventListener('userLogin', updateUser);
     return () => window.removeEventListener('userLogin', updateUser);
   }, []);
+
+  // Handle click outside for user dropdown
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!e.target.closest('#user-dropdown-btn') && !e.target.closest('#user-dropdown-menu')) {
+        setUserDropdownOpen(false);
+      }
+    };
+    if (userDropdownOpen) {
+      document.addEventListener('mousedown', handleClick);
+    } else {
+      document.removeEventListener('mousedown', handleClick);
+    }
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [userDropdownOpen]);
+
   console.log('Navbar user:', user);
 
   return (
@@ -336,9 +353,53 @@ const RentalWebsite = () => {
     </button>
   </li>
   {user ? (
-    <li>
-      <span className="text-blue-700 font-semibold px-4 py-2 rounded-lg bg-blue-50 border border-blue-200">{user.name}</span>
-    </li>
+    <>
+      <li>
+        <button
+          onClick={() => navigate('/seller/dashboard')}
+          className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group flex items-center"
+        >
+          <Building2 className="w-4 h-4 mr-1" />
+          Sell Property
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+        </button>
+      </li>
+      <li>
+        <button
+          onClick={() => navigate('/order-history')}
+          className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group flex items-center"
+        >
+          <Calendar className="w-4 h-4 mr-1" />
+          Booking History
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
+        </button>
+      </li>
+      <li className="relative">
+        <button
+          id="user-dropdown-btn"
+          onClick={() => setUserDropdownOpen(v => !v)}
+          className="text-blue-700 font-semibold px-4 py-2 rounded-lg bg-blue-50 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          {user.name}
+        </button>
+        {userDropdownOpen && (
+          <div id="user-dropdown-menu" className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+            <button
+              className="block w-full text-left px-4 py-2 hover:bg-blue-50 text-gray-700"
+              onClick={() => { setUserDropdownOpen(false); navigate('/profile'); }}
+            >
+              View Profile
+            </button>
+            <button
+              className="block w-full text-left px-4 py-2 hover:bg-blue-50 text-gray-700 border-t border-gray-100"
+              onClick={() => { setUserDropdownOpen(false); localStorage.removeItem('user'); localStorage.removeItem('token'); window.dispatchEvent(new Event('userLogin')); navigate('/login'); }}
+            >
+              Logout
+            </button>
+          </div>
+        )}
+      </li>
+    </>
   ) : (
     <li>
       <button
@@ -346,18 +407,6 @@ const RentalWebsite = () => {
         className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group"
       >
         login/register
-        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
-      </button>
-    </li>
-  )}
-  {user && (
-    <li>
-      <button
-        onClick={() => navigate('/order-history')}
-        className="text-gray-700 hover:text-blue-600 font-medium transition-all duration-300 capitalize relative group flex items-center"
-      >
-        <Calendar className="w-4 h-4 mr-1" />
-        Booking History
         <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-full transition-all duration-300"></span>
       </button>
     </li>
@@ -408,9 +457,61 @@ const RentalWebsite = () => {
                   </button>
                 </li>
                 {user ? (
-                  <li>
-                    <span className="block w-full text-left py-3 px-2 text-blue-700 font-semibold bg-blue-50 rounded-lg border border-blue-200">{user.name}</span>
-                  </li>
+                  <>
+                    <li>
+                      <button
+                        onClick={() => {
+                          navigate('/seller/dashboard');
+                          setIsMenuOpen(false);
+                        }}
+                        className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 flex items-center justify-between"
+                      >
+                        <span className="flex items-center">
+                          <Building2 className="w-4 h-4 mr-2" />
+                          Sell Property
+                        </span>
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          navigate('/order-history');
+                          setIsMenuOpen(false);
+                        }}
+                        className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 flex items-center justify-between"
+                      >
+                        <span className="flex items-center">
+                          <Calendar className="w-4 h-4 mr-2" />
+                          Booking History
+                        </span>
+                      </button>
+                    </li>
+                    <li className="relative">
+                      <button
+                        id="user-dropdown-btn"
+                        onClick={() => setUserDropdownOpen(v => !v)}
+                        className="text-blue-700 font-semibold px-4 py-2 rounded-lg bg-blue-50 border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      >
+                        {user.name}
+                      </button>
+                      {userDropdownOpen && (
+                        <div id="user-dropdown-menu" className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                          <button
+                            className="block w-full text-left px-4 py-2 hover:bg-blue-50 text-gray-700"
+                            onClick={() => { setUserDropdownOpen(false); navigate('/profile'); }}
+                          >
+                            View Profile
+                          </button>
+                          <button
+                            className="block w-full text-left px-4 py-2 hover:bg-blue-50 text-gray-700 border-t border-gray-100"
+                            onClick={() => { setUserDropdownOpen(false); localStorage.removeItem('user'); localStorage.removeItem('token'); window.dispatchEvent(new Event('userLogin')); navigate('/login'); }}
+                          >
+                            Logout
+                          </button>
+                        </div>
+                      )}
+                    </li>
+                  </>
                 ) : (
                   <li>
                     <button
@@ -421,22 +522,6 @@ const RentalWebsite = () => {
                       className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 capitalize"
                     >
                       login/register
-                    </button>
-                  </li>
-                )}
-                {user && (
-                  <li>
-                    <button
-                      onClick={() => {
-                        navigate('/order-history');
-                        setIsMenuOpen(false);
-                      }}
-                      className="block w-full text-left py-3 px-2 text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg font-medium transition-all duration-300 flex items-center justify-between"
-                    >
-                      <span className="flex items-center">
-                        <Calendar className="w-4 h-4 mr-2" />
-                        Booking History
-                      </span>
                     </button>
                   </li>
                 )}

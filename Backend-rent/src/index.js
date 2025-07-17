@@ -7,18 +7,24 @@ import dotenv from "dotenv";
 import { authenticateToken } from "./middleware/token-middleware.js";
 import router from "./route/uploadRoutes.js";
 import { createUploadsFolder } from "./security/helper.js";
-import cors from "cors"
+import cors from "cors";
 import { bookingRouter } from "./route/booking/bookingRoute.js";
 import { propertyRouter } from "./route/property/propertyRoute.js";
-import './models/index.js';
+import "./models/index.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-app.use(cors())
+app.use(cors());
 
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
+app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 app.use(authenticateToken);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
