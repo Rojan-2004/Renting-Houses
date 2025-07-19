@@ -34,9 +34,9 @@ const PurchaseRequests = () => {
       console.log('Frontend - Token:', token);
       console.log('Frontend - Fetching purchase requests with params:', { page: currentPage, limit: 10, filter });
       console.log('Frontend - Token exists:', !!token);
-      console.log('Frontend - Request URL:', `http://localhost:5000/api/bookings/purchase-requests?${queryParams}`);
+      console.log('Frontend - Request URL:', `http://localhost:4000/api/bookings/purchase-requests?${queryParams}`);
 
-      const response = await fetch(`http://localhost:5000/api/bookings/purchase-requests?${queryParams}`, {
+      const response = await fetch(`http://localhost:4000/api/bookings/purchase-requests?${queryParams}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -65,7 +65,7 @@ const PurchaseRequests = () => {
   const handleApprove = async (requestId) => {
     try {
       setProcessing(true);
-      const response = await fetch(`http://localhost:5000/api/bookings/${requestId}/approve`, {
+      const response = await fetch(`http://localhost:4000/api/bookings/${requestId}/approve`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -96,7 +96,7 @@ const PurchaseRequests = () => {
 
     try {
       setProcessing(true);
-      const response = await fetch(`http://localhost:5000/api/bookings/${selectedRequest._id}/reject`, {
+      const response = await fetch(`http://localhost:4000/api/bookings/${selectedRequest._id}/reject`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -214,7 +214,7 @@ const PurchaseRequests = () => {
                   <div className="lg:w-1/3">
                     {request.property.images && request.property.images.length > 0 ? (
                       <img
-                        src={`http://localhost:5000${typeof request.property.images[0] === 'object' ? request.property.images[0].url || '' : `/uploads/${request.property.images[0]}`}`}
+                        src={`http://localhost:4000${typeof request.property.images[0] === 'object' ? request.property.images[0].url || '' : `/uploads/${request.property.images[0]}`}`}
                         alt={request.property.title}
                         className="w-full h-48 object-cover rounded-lg"
                       />

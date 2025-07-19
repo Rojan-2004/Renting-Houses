@@ -67,7 +67,7 @@ const SellerDashboard = () => {
         
         try {
           console.log('Sending image upload request to /api/file/upload');
-          const res = await fetch('http://localhost:5000/api/file/upload', {
+          const res = await fetch('http://localhost:4000/api/file/upload', {
             method: 'POST',
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -132,7 +132,7 @@ const SellerDashboard = () => {
       console.log('Property data to send:', propertyData);
       console.log('Sending property creation request to /api/properties');
       
-      const res = await fetch('http://localhost:5000/api/properties', {
+      const res = await fetch('http://localhost:4000/api/properties', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

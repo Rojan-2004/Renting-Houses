@@ -65,7 +65,7 @@ const PropertyListing = () => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch('http://localhost:5000/api/wishlist/my-wishlist', {
+      const response = await fetch('http://localhost:4000/api/wishlist/my-wishlist', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

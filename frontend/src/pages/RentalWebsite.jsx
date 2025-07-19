@@ -75,7 +75,7 @@ const RentalWebsite = () => {
   useEffect(() => {
     const fetchProperties = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/properties');
+        const response = await fetch('http://localhost:4000/api/properties');
         if (response.ok) {
           const data = await response.json();
           const formattedProperties = data.map(property => ({
@@ -88,7 +88,7 @@ const RentalWebsite = () => {
             sqft: property.area,
             rating: property.rating || 4.5,
             reviews: property.reviewCount || 0,
-            images: property.images && property.images.length > 0 ? property.images.map(img => `http://localhost:5000/${img}`) : ['/house1.png'],
+            images: property.images && property.images.length > 0 ? property.images.map(img => `http://localhost:4000/${img}`) : ['/house1.png'],
             features: property.amenities || [],
             type: property.type?.toLowerCase() || 'apartment',
             availableFrom: property.availableFrom ? new Date(property.availableFrom).toLocaleDateString() : 'Available Now',
@@ -524,7 +524,7 @@ const RentalWebsite = () => {
                 <div className="relative h-64 overflow-hidden">
                   <img 
                     src={property.images && property.images.length > 0 
-                      ? (property.images[currentImageIndex[property.id] || 0]?.url || `http://localhost:5000${typeof property.images[currentImageIndex[property.id] || 0] === 'string' ? property.images[currentImageIndex[property.id] || 0] : ''}`) 
+                      ? (property.images[currentImageIndex[property.id] || 0]?.url || `http://localhost:4000${typeof property.images[currentImageIndex[property.id] || 0] === 'string' ? property.images[currentImageIndex[property.id] || 0] : ''}`) 
                       : '/house1.png'
                     } 
                     alt={property.location}

@@ -55,7 +55,7 @@ const PropertyDetail = () => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch('http://localhost:5000/api/wishlist/my-wishlist', {
+      const response = await fetch('http://localhost:4000/api/wishlist/my-wishlist', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -114,7 +114,7 @@ const PropertyDetail = () => {
   const getPropertyImage = (index = 0) => {
     if (property?.images && property.images.length > 0) {
       const imageUrl = property.images[index]?.url || property.images[index];
-      return imageUrl ? `http://localhost:5000${imageUrl}` : '/house1.png';
+      return imageUrl ? `http://localhost:4000${imageUrl}` : '/house1.png';
     }
     return '/house1.png';
   };
@@ -213,7 +213,7 @@ const PropertyDetail = () => {
                 return (
                   <img
                     key={idx}
-                    src={imageUrl ? `http://localhost:5000${imageUrl}` : '/house1.png'}
+                    src={imageUrl ? `http://localhost:4000${imageUrl}` : '/house1.png'}
                     onClick={() => setMainImg(idx)}
                     className={`h-20 w-32 rounded-xl object-cover border-2 cursor-pointer transition-all duration-200 ${mainImg === idx ? 'border-blue-500 ring-2 ring-blue-300 scale-105' : 'border-white/70 hover:border-blue-300'}`}
                     alt={`Thumbnail ${idx + 1}`}

@@ -22,7 +22,7 @@ export default function AdminProperties() {
         ...(searchTerm && { search: searchTerm })
       });
 
-      const response = await fetch(`http://localhost:5000/api/admin/properties?${params}`, {
+      const response = await fetch(`http://localhost:4000/api/admin/properties?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ export default function AdminProperties() {
   const handleStatusUpdate = async (propertyId, newStatus) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/admin/properties/${propertyId}/status`, {
+      const response = await fetch(`http://localhost:4000/api/admin/properties/${propertyId}/status`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -88,7 +88,7 @@ export default function AdminProperties() {
     if (!window.confirm('Are you sure you want to delete this property?')) return;
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/properties/${id}`, {
+      const response = await fetch(`http://localhost:4000/api/properties/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

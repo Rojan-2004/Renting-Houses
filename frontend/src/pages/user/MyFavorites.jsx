@@ -54,7 +54,7 @@ const MyFavorites = () => {
         return;
       }
 
-      const response = await fetch('http://localhost:5000/api/wishlist/my-wishlist', {
+      const response = await fetch('http://localhost:4000/api/wishlist/my-wishlist', {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -123,7 +123,7 @@ const MyFavorites = () => {
         return;
       }
 
-      const response = await fetch(`http://localhost:5000/api/wishlist/remove-property/${propertyId}`, {
+      const response = await fetch(`http://localhost:4000/api/wishlist/remove-property/${propertyId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -341,7 +341,7 @@ const MyFavorites = () => {
                       console.log('Property images:', property.images);
                       console.log('Current image index:', currentImageIndex[property.id] || 0);
                       const imageUrl = property.images && property.images.length > 0 
-                        ? `http://localhost:5000${property.images[currentImageIndex[property.id] || 0]?.url || (typeof property.images[currentImageIndex[property.id] || 0] === 'string' ? property.images[currentImageIndex[property.id] || 0] : '')}` 
+                        ? `http://localhost:4000${property.images[currentImageIndex[property.id] || 0]?.url || (typeof property.images[currentImageIndex[property.id] || 0] === 'string' ? property.images[currentImageIndex[property.id] || 0] : '')}` 
                         : '/house1.png';
                       console.log('Final image URL:', imageUrl);
                       return imageUrl;

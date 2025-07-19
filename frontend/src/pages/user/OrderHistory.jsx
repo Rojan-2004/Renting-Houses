@@ -56,7 +56,7 @@ const OrderHistory = () => {
       setError(null);
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:5000/api/bookings', {
+        const res = await fetch('http://localhost:4000/api/bookings', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -162,7 +162,7 @@ const OrderHistory = () => {
           >
             <div className="relative h-48 w-full flex items-center justify-center bg-gray-100">
               <img
-                src={booking.property?.images?.[0]?.url ? `http://localhost:5000${booking.property.images[0].url}` : (booking.property?.images?.[0] ? `http://localhost:5000${booking.property.images[0]}` : '/luxuryhouse.jpg')}
+                src={booking.property?.images?.[0]?.url ? `http://localhost:4000${booking.property.images[0].url}` : (booking.property?.images?.[0] ? `http://localhost:4000${booking.property.images[0]}` : '/luxuryhouse.jpg')}
                 alt={booking.property?.title || 'Property'}
                 className="object-cover w-full h-full"
               />

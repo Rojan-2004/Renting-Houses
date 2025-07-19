@@ -29,7 +29,7 @@ export default function SellerTransactions() {
       console.log('Seller Purchase Requests - Fetching data from:', `/api/bookings/seller/transactions?${params}`);
       console.log('Seller Purchase Requests - Request params:', { page: currentPage, limit: 10, statusFilter });
       
-      const response = await fetch(`http://localhost:5000/api/bookings/seller/transactions?${params}`, {
+      const response = await fetch(`http://localhost:4000/api/bookings/seller/transactions?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

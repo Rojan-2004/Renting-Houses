@@ -23,13 +23,13 @@ export default function AdminReports() {
         const token = localStorage.getItem('token');
         
         const [analyticsResponse, dashboardResponse] = await Promise.all([
-          fetch(`http://localhost:5000/api/admin/analytics?period=${selectedPeriod}`, {
+          fetch(`http://localhost:4000/api/admin/analytics?period=${selectedPeriod}`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
             },
           }),
-          fetch('http://localhost:5000/api/admin/dashboard', {
+          fetch('http://localhost:4000/api/admin/dashboard', {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'

@@ -24,7 +24,7 @@ export default function AdminUsers() {
         search: search.trim()
       });
       
-      const response = await fetch(`http://localhost:5000/api/admin/users?${params}`, {
+      const response = await fetch(`http://localhost:4000/api/admin/users?${params}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ export default function AdminUsers() {
       const token = localStorage.getItem('token');
       const newStatus = !currentStatus;
       
-      const response = await fetch(`http://localhost:5000/api/admin/users/${id}/status`, {
+      const response = await fetch(`http://localhost:4000/api/admin/users/${id}/status`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -79,7 +79,7 @@ export default function AdminUsers() {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/admin/users/${id}`, {
+      const response = await fetch(`http://localhost:4000/api/admin/users/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -111,7 +111,7 @@ export default function AdminUsers() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/admin/users/${editingUser._id}`, {
+      const response = await fetch(`http://localhost:4000/api/admin/users/${editingUser._id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

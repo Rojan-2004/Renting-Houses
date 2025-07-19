@@ -38,7 +38,7 @@ const RentalHouses = () => {
         ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
       });
 
-      const response = await fetch(`http://localhost:5000/api/properties?${queryParams}`, {
+      const response = await fetch(`http://localhost:4000/api/properties?${queryParams}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -64,7 +64,7 @@ const RentalHouses = () => {
 
   const fetchWishlist = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/wishlist/my-wishlist', {
+      const response = await fetch('http://localhost:4000/api/wishlist/my-wishlist', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -82,8 +82,8 @@ const RentalHouses = () => {
     try {
       const isInWishlist = wishlist.includes(propertyId);
       const url = isInWishlist 
-        ? `http://localhost:5000/api/wishlist/remove-property/${propertyId}`
-        : 'http://localhost:5000/api/wishlist/add-property';
+        ? `http://localhost:4000/api/wishlist/remove-property/${propertyId}`
+        : 'http://localhost:4000/api/wishlist/add-property';
       
       const method = isInWishlist ? 'DELETE' : 'POST';
       const body = isInWishlist ? undefined : JSON.stringify({ propertyId });
@@ -116,7 +116,7 @@ const RentalHouses = () => {
       const checkOutDate = new Date();
       checkOutDate.setDate(checkOutDate.getDate() + 8);
       
-      const response = await fetch('http://localhost:5000/api/bookings', {
+      const response = await fetch('http://localhost:4000/api/bookings', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -300,7 +300,7 @@ const RentalHouses = () => {
                     {property.images && property.images.length > 0 ? (
                       <>
                         <img
-                          src={`http://localhost:5000${property.images[currentImageIndex[property._id] || 0]?.url || (typeof property.images[currentImageIndex[property._id] || 0] === 'string' ? property.images[currentImageIndex[property._id] || 0] : '')}`}
+                          src={`http://localhost:4000${property.images[currentImageIndex[property._id] || 0]?.url || (typeof property.images[currentImageIndex[property._id] || 0] === 'string' ? property.images[currentImageIndex[property._id] || 0] : '')}`}
                           alt={property.title}
                           className="w-full h-full object-cover"
                         />

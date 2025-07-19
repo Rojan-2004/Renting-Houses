@@ -65,7 +65,7 @@ const AdminProfile = () => {
         updateData.newPassword = formData.newPassword;
       }
 
-      const response = await fetch(`http://localhost:5000/api/admin/profile`, {
+      const response = await fetch(`http://localhost:4000/api/admin/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
