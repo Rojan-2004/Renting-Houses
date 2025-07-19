@@ -1,50 +1,52 @@
-# [Project Name] - Freelance Marketplace
+# Rent Buddy - Home Rental Marketplace
 
 
-A full-stack freelance marketplace platform similar to Upwork, connecting clients with skilled freelancers.
+A full-stack home rental platform connecting property owners with tenants for short/long-term stays.
 
-## Features
+## Key Features
 
 ### User System
-- ✅ Sign up as Client or Freelancer
+- ✅ Sign up as Owner or Tenant
 - ✅ JWT Authentication
-- ✅ Profile Management
-- 🔜 Email Verification
+- ✅ Profile Management with verification badges
+- 🔜 KYC Verification
 
-### Job Marketplace
-- ✅ Post projects/jobs
-- ✅ Browse & filter jobs
-- ✅ Submit proposals
-- 🔜 Real-time bidding
+### Property Marketplace
+- ✅ List properties with photos
+- ✅ Advanced search & filters (location, price, amenities)
+- ✅ Save favorite listings
+- 🔜 Instant booking system
 
-### Project Management
-- ✅ Milestone system
-- ✅ Messaging
-- ✅ File sharing
-- 🔜 Video calls
+### Rental Management
+- ✅ Booking requests
+- ✅ In-app messaging
+- ✅ Document sharing (leases, IDs)
+- 🔜 Virtual tours
 
 ## Tech Stack
 
 **Frontend:**
-- React.js
-- Tailwind CSS
-- Redux Toolkit
-- Axios
+- React.js (v18+)
+- Tailwind CSS (v3+)
+- Redux Toolkit (for state management)
+- Axios (API calls)
+- React Hook Form (form handling)
 
 **Backend:**
-- Node.js
-- Express.js
-- MongoDB (Mongoose)
+- Node.js (v16+)
+- Express.js (v4+)
+- MongoDB with Mongoose
 - JWT Authentication
+- Multer (file uploads)
 
 **DevOps:**
-- Git
-- Postman
-- 🔜 Docker
+- Git (version control)
+- Postman (API testing)
+- 🔜 Docker (containerization)
 
-## Installation
+## Installation Guide
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/your-repo.git
-   cd your-repo
+   git clone https://github.com/yourusername/rent-buddy.git
+   cd rent-buddy
