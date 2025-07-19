@@ -1,9 +1,8 @@
 # Rent Buddy - Home Rental Marketplace
 
-
 A full-stack home rental platform connecting property owners with tenants for short/long-term stays.
 
-## Key Features
+## Key Feature
 
 ### User System
 - ✅ Sign up as Owner or Tenant
