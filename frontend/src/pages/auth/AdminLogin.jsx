@@ -29,7 +29,7 @@ export default function AdminLogin() {
       let result = await response.json();
       if (response.ok && result.user.role === 'admin') {
         // Store token and user data in localStorage
-        localStorage.setItem('access_token', result.token);
+        localStorage.setItem('token', result.token);
         localStorage.setItem('user', JSON.stringify(result.user));
         setAdminLoginMessage("Admin login successful!");
         setTimeout(() => {

@@ -114,9 +114,6 @@ export default function UserLogin() {
             </div>
             
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400">
-                <Lock className="w-5 h-5" />
-              </span>
               <input
                 type={showPassword ? "text" : "password"}
                 placeholder="Password"
@@ -124,13 +121,15 @@ export default function UserLogin() {
                   required: "Password is required",
                   minLength: { value: 6, message: "Minimum 6 characters" }
                 })}
-                className="w-full pl-10 pr-10 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition outline-none shadow-sm bg-blue-50 text-base"
+                className="w-full pl-12 pr-12 py-3 border border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition outline-none shadow-sm bg-blue-50 text-base"
               />
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-400 pointer-events-none">
+                <Lock className="w-5 h-5" />
+              </span>
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 cursor-pointer" onClick={() => setShowPassword(v => !v)}>
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </span>
               {loginErrors.password && <p className="text-red-600 text-xs mt-1">{loginErrors.password.message}</p>}
-              
               <div className="text-right mt-2">
                 <button
                   type="button"
