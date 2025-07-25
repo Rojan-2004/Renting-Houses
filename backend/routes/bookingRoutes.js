@@ -82,6 +82,34 @@ router.get('/purchase-requests', auth, authorize('seller'), async (req, res) => 
   }
 });
 
+router.get('/all', auth, authorize('admin'), async (req, res) => {
+  try {
+    const { page = 1, limit = 10, status } = req.query;
+    
+    const filter = {};
+    if (status) filter.status = status;
+
+    const bookings = await Booking.find(filter)
+      .populate('user', 'name email phone')
+      .populate('property', 'title location price images')
+      .populate('seller', 'name email phone')
+      .sort({ createdAt: -1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+
+    const total = await Booking.countDocuments(filter);
+
+    res.json({
+      data: bookings,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+      total
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 router.get('/:id', auth, async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id)
@@ -271,34 +299,6 @@ router.delete('/:id', auth, async (req, res) => {
     await Booking.findByIdAndDelete(req.params.id);
 
     res.json({ message: 'Booking deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
-});
-
-router.get('/all', auth, authorize('admin'), async (req, res) => {
-  try {
-    const { page = 1, limit = 10, status } = req.query;
-    
-    const filter = {};
-    if (status) filter.status = status;
-
-    const bookings = await Booking.find(filter)
-      .populate('user', 'name email phone')
-      .populate('property', 'title location price images')
-      .populate('seller', 'name email phone')
-      .sort({ createdAt: -1 })
-      .limit(limit * 1)
-      .skip((page - 1) * limit);
-
-    const total = await Booking.countDocuments(filter);
-
-    res.json({
-      data: bookings,
-      totalPages: Math.ceil(total / limit),
-      currentPage: page,
-      total
-    });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
